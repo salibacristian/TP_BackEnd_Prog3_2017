@@ -1,0 +1,8 @@
+﻿entidades:
+vehiculo
+empleado
+funciones principales:
+ingresar vehiculo
+nuevo empleado
+borrar empleado
+modificar empleado
