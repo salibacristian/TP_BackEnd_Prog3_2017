@@ -4,9 +4,10 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 
 require '../composer/vendor/autoload.php';
-require_once 'AccesoDatos.php';
-require_once './Modelo/cd.php';
-require_once './MW/AutentificadorJWT.php';
+require_once '../AccesoDatos.php';
+require_once '../Modelo/Vehiculo.php';
+require_once '../Aplicacion/VehiculoService.php';
+require_once '../MW/AutentificadorJWT.php';
 
 
 $config['displayErrorDetails'] = true;
@@ -19,6 +20,20 @@ $app = new \Slim\App(["settings" => $config]);
     $response->getBody()->write("GET => Bienvenido!!! ,a SlimFramework");
     return $response;
   });
+  
+  $app->group('/Vehiculo', function () {
+ 
+  $this->get('/', \VehiculoService::class . ':traerTodos');
+ 
+  $this->get('/{id}', \VehiculoService::class . ':traerUno');
+
+  $this->post('/', \VehiculoService::class . ':CargarUno');
+
+  $this->delete('/', \VehiculoService::class . ':BorrarUno');
+
+  $this->put('/', \VehiculoService::class . ':ModificarUno');
+     
+});
 
   $app->get('/crearToken/', function (Request $request, Response $response) {
       $datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");

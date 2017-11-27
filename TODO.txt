@@ -1,16 +1,8 @@
-colocar el nombre de la db en accesoDatos.php
-crear .htaccess
-depende lo que enseñen de JWT la API se ve bien asi
-$app->group('/cd', function () {
- 
-  $this->get('/', \cdApi::class . ':traerTodos');
- 
-  $this->get('/{id}', \cdApi::class . ':traerUno');
-
-  $this->post('/', \cdApi::class . ':CargarUno');
-
-  $this->delete('/', \cdApi::class . ':BorrarUno');
-
-  $this->put('/', \cdApi::class . ':ModificarUno');
-     
-});llamando a un MW segun se prfeiera
+﻿entidades:
+vehiculo
+empleado
+funciones principales:
+ingresar vehiculo
+nuevo empleado
+borrar empleado
+modificar empleado
