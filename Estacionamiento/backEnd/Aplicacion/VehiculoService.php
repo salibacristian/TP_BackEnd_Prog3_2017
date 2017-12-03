@@ -1,6 +1,6 @@
 <?php
-require_once '../Modelo/Vehiculo.php';
-require_once '../Interfaces/IApiUsable.php';
+require_once './Modelo/Vehiculo.php';
+require_once './Interfaces/IApiUsable.php';
 
 class VehiculoService extends Vehiculo implements IApiUsable
 {
@@ -33,7 +33,7 @@ class VehiculoService extends Vehiculo implements IApiUsable
         $v->IngresarVehiculo();
 
         $archivos = $request->getUploadedFiles();
-        $destino="../fotos/";
+        $destino="./fotos/";
         //var_dump($archivos);
         //var_dump($archivos['foto']);
 

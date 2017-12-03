@@ -3,11 +3,11 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 
-require '../composer/vendor/autoload.php';
-require_once '../AccesoDatos.php';
-require_once '../Modelo/Vehiculo.php';
-require_once '../Aplicacion/VehiculoService.php';
-require_once '../MW/AutentificadorJWT.php';
+require_once './composer/vendor/autoload.php';
+require_once './AccesoDatos.php';
+require_once './Modelo/Vehiculo.php';
+require_once './Aplicacion/VehiculoService.php';
+require_once './MW/AutentificadorJWT.php';
 
 
 $config['displayErrorDetails'] = true;
