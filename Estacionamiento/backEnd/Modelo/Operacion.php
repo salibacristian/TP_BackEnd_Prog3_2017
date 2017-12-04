@@ -1,24 +1,28 @@
 <?php
-class Vehiculo
+class Operacion
 {
 	public $id;
 	public $dominio;
- 	public $marca;
-  	public $linea;
-  	public $modelo;
+ 	public $foto;
+	public $id_empleado_ingreso;
+	public $id_empleado_salida;
+	public $fecha_hora_ingreso;
+	public $fecha_hora_salida;
+	public $tiempo;
+	public $importe;
 	public $color;
 
-  	public function BorrarVehiculo()
-	 {
-	 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			$consulta =$objetoAccesoDato->RetornarConsulta("
-				delete 
-				from Vehiculos 				
-				WHERE id=:id");	
-				$consulta->bindValue(':id',$this->id, PDO::PARAM_INT);		
-				$consulta->execute();
-				return $consulta->rowCount();
-	 }
+  	// public function BorrarVehiculo()
+	//  {
+	//  		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+	// 		$consulta =$objetoAccesoDato->RetornarConsulta("
+	// 			delete 
+	// 			from Vehiculos 				
+	// 			WHERE id=:id");	
+	// 			$consulta->bindValue(':id',$this->id, PDO::PARAM_INT);		
+	// 			$consulta->execute();
+	// 			return $consulta->rowCount();
+	//  }
 
 	// public static function BorrarCdPorAnio($año)
 	 // {
@@ -64,19 +68,24 @@ class Vehiculo
 			// return $consulta->execute();
 	 // }
 
-	 public function IngresarVehiculo()
+	 public function IngresarOperacion()
 	 {
-				$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-				$consulta =$objetoAccesoDato->RetornarConsulta("INSERT into Vehiculos 
-				(dominio,marca,linea,modelo,color)
-				values(:dominio,:marca,:linea,:modelo,:color)");
-				$consulta->bindValue(':dominio',$this->dominio, PDO::PARAM_STR);
-				$consulta->bindValue(':marca',$this->marca, PDO::PARAM_STR);
-				$consulta->bindValue(':linea', $this->linea, PDO::PARAM_STR);
-				$consulta->bindValue(':modelo', $this->modelo, PDO::PARAM_INT);
-				$consulta->bindValue(':color', $this->color, PDO::PARAM_STR);
-				$consulta->execute();		
-				return $objetoAccesoDato->RetornarUltimoIdInsertado();
+		 //var_dump($this);die;
+		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+		$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO Operaciones 
+		(dominio,foto,id_empleado_ingreso,id_empleado_salida,fecha_hora_ingreso,fecha_hora_salida,tiempo,importe,color)
+		VALUES(:dominio,:foto,:id_empleado_ingreso,:id_empleado_salida,:fecha_hora_ingreso,:fecha_hora_salida,:tiempo,:importe,:color)");
+		$consulta->bindValue(':dominio',$this->dominio, PDO::PARAM_STR);
+		$consulta->bindValue(':foto',$this->foto, PDO::PARAM_STR);
+		$consulta->bindValue(':id_empleado_ingreso', $this->id_empleado_ingreso, PDO::PARAM_INT);
+		$consulta->bindValue(':id_empleado_salida', $this->id_empleado_salida, PDO::PARAM_INT);
+		$consulta->bindValue(':fecha_hora_ingreso', $this->fecha_hora_ingreso, PDO::PARAM_STR);
+		$consulta->bindValue(':fecha_hora_salida', $this->fecha_hora_salida, PDO::PARAM_STR);
+		$consulta->bindValue(':tiempo', $this->tiempo, PDO::PARAM_INT);
+		$consulta->bindValue(':importe', $this->importe, PDO::PARAM_STR);
+		$consulta->bindValue(':color', $this->color, PDO::PARAM_STR);
+		$consulta->execute();
+		return $objetoAccesoDato->RetornarUltimoIdInsertado();
 	 }
 	 // public function GuardarCD()
 	 // {
@@ -91,21 +100,21 @@ class Vehiculo
 	 // }
 
 
-  	public static function TraerVehiculos()
+  	public static function TraerOperaciones()
 	{
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			$consulta =$objetoAccesoDato->RetornarConsulta("select * from Vehiculos");
+			$consulta =$objetoAccesoDato->RetornarConsulta("select * from Operaciones");
 			$consulta->execute();			
-			return $consulta->fetchAll(PDO::FETCH_CLASS, "Vehiculo");		
+			return $consulta->fetchAll(PDO::FETCH_CLASS, "Operacion");		
 	}
 
-	public static function TraerVehiculo($id) 
+	public static function TraerOperacion($id) 
 	{
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 			$consulta =$objetoAccesoDato->RetornarConsulta("select *
-			from Vehiculos where id = $id");
+			from Operaciones where id = $id");
 			$consulta->execute();
-			$v= $consulta->fetchObject('Vehiculo');
+			$v= $consulta->fetchObject('Operacion');
 			return $v;				
 
 			
@@ -147,9 +156,5 @@ class Vehiculo
 			
 	// }
 
-	// public function mostrarDatos()
-	// {
-	  	// return "Metodo mostar:".$this->titulo."  ".$this->cantante."  ".$this->año;
-	// }
 
 }

@@ -5,8 +5,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require_once './composer/vendor/autoload.php';
 require_once './AccesoDatos.php';
-require_once './Modelo/Vehiculo.php';
-require_once './Aplicacion/VehiculoService.php';
+require_once './Modelo/Operacion.php';
+require_once './Aplicacion/OperacionService.php';
 require_once './MW/AutentificadorJWT.php';
 
 
@@ -21,17 +21,17 @@ $app = new \Slim\App(["settings" => $config]);
     return $response;
   });
   
-  $app->group('/Vehiculo', function () {
+  $app->group('/Operacion', function () {
  
-  $this->get('/', \VehiculoService::class . ':traerTodos');
+  $this->get('/', \OperacionService::class . ':traerTodos');
  
-  $this->get('/{id}', \VehiculoService::class . ':traerUno');
+  $this->get('/{id}', \OperacionService::class . ':traerUno');
 
-  $this->post('/', \VehiculoService::class . ':CargarUno');
+  $this->post('/', \OperacionService::class . ':CargarUno');
 
-  $this->delete('/', \VehiculoService::class . ':BorrarUno');
+  $this->delete('/', \OperacionService::class . ':BorrarUno');
 
-  $this->put('/', \VehiculoService::class . ':ModificarUno');
+  $this->put('/', \OperacionService::class . ':ModificarUno');
      
 });
 
