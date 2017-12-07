@@ -1,8 +1,9 @@
-﻿entidades:
-vehiculo
-empleado
-funciones principales:
-ingresar vehiculo
-nuevo empleado
-borrar empleado
-modificar empleado
+﻿1- ingresar auto 7/12
+2- nuevo empleado TEST
+3- modificar empleado 7/12
+4- borrar empleado 7/12
+5- sacar auto 8/12
+6- logeo 9/12
+7- listados 10/12
+8- ?archivos excel y pdf 11/12
+

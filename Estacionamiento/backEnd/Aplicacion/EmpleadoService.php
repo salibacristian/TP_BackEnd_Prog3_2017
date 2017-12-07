@@ -1,5 +1,6 @@
 <?php
 require_once './Modelo/Empleado.php';
+require_once './Modelo/Ingreso_empleado.php';
 require_once './Interfaces/IApiUsable.php';
 
 class EmpleadoService extends Empleado //implements IApiUsable
@@ -42,12 +43,18 @@ class EmpleadoService extends Empleado //implements IApiUsable
         //var_dump($archivos['foto']);
 
         $nombreAnterior=$archivos['foto']->getClientFilename();
-        $extension= explode(".", $nombreAnterior)  ;
+        $extension= explode(".", $nombreAnterior);
         //var_dump($nombreAnterior);die();
         $extension=array_reverse($extension);
 		$e->foto=$mail.".".$extension[0];
-		$e->IngresarEmpleado();
+		$id_empleado = $e->IngresarEmpleado();
 		$archivos['foto']->moveTo($destino.$mail.".".$extension[0]);
+
+		$i = new Ingreso_empleado();
+		$e->fecha_hora_ingreso=$nombre;
+		$e->id_empleado = $id_empleado;
+		$i->Ingresar();
+
         $response->getBody()->write("se guardo el empleado");
 
         return $response;
