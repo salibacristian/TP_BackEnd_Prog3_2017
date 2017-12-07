@@ -1,41 +1,43 @@
 <?php
-require_once './Modelo/Operacion.php';
+require_once './Modelo/Empleado.php';
 require_once './Interfaces/IApiUsable.php';
 
-class OperacionService extends Operacion //implements IApiUsable
+class EmpleadoService extends Empleado //implements IApiUsable
 {
  	public function TraerUno($request, $response, $args) {
      	$id=$args['id'];
-    	$o=Operacion::TraerOperacion($id);
-     	$newResponse = $response->withJson($o, 200);  
+    	$e=Empleado::TraerEmpleado($id);
+     	$newResponse = $response->withJson($e, 200);  
     	return $newResponse;
     }
      public function TraerTodos($request, $response, $args) {
-      	$operaciones=Operacion::TraerOperaciones();
-     	$response = $response->withJson($operaciones, 200);  
+      	$empleados=Empleado::TraerEmpleados();
+     	$response = $response->withJson($empleados, 200);  
     	return $response;
     }
       public function CargarUno($request, $response, $args) {
      	 $ArrayDeParametros = $request->getParsedBody();
         //var_dump($ArrayDeParametros);
-		$dominio= $ArrayDeParametros['dominio'];
-        $foto= $ArrayDeParametros['foto'];
-        $id_empleado_ingreso= $ArrayDeParametros['id_empleado_ingreso'];
-		$fecha_hora_ingreso= $ArrayDeParametros['fecha_hora_ingreso'];
-        $tiempo= $ArrayDeParametros['tiempo'];
-        $importe= $ArrayDeParametros['importe'];
-		$color= $ArrayDeParametros['color'];
+		$nombre= $ArrayDeParametros['nombre'];
+        $apellido= $ArrayDeParametros['apellido'];
+        $clave= $ArrayDeParametros['clave'];
+		$mail= $ArrayDeParametros['mail'];
+        $turno= $ArrayDeParametros['turno'];
+        $perfil= $ArrayDeParametros['perfil'];
+        $fecha_creacion= $ArrayDeParametros['fecha_creacion'];
+
         
-        $o = new Operacion();
-		$o->dominio=$dominio;
-		$o->id_empleado_ingreso=$id_empleado_ingreso;
-        $o->fecha_hora_ingreso=$fecha_hora_ingreso;
-		$o->tiempo=$tiempo;
-        $o->importe=$importe;
-		$o->color=$color;
+        $e = new Empleado();
+		$e->nombre=$nombre;
+		$e->apellido=$apellido;
+        $e->clave=$clave;
+		$e->mail=$mail;
+        $e->turno=$tuperfilrno;
+		$e->perfil=$perfil;
+		$e->fecha_creacion=$fecha_creacion;
 
         $archivos = $request->getUploadedFiles();
-        $destino="./fotosVehiculos/";
+        $destino="./fotosEmpleados/";
         //var_dump($archivos);
         //var_dump($archivos['foto']);
 
@@ -43,10 +45,10 @@ class OperacionService extends Operacion //implements IApiUsable
         $extension= explode(".", $nombreAnterior)  ;
         //var_dump($nombreAnterior);die();
         $extension=array_reverse($extension);
-		$o->foto=$dominio.".".$extension[0];
-		$o->IngresarOperacion();
-		$archivos['foto']->moveTo($destino.$dominio.".".$extension[0]);
-        $response->getBody()->write("se guardo la operacion");
+		$e->foto=$mail.".".$extension[0];
+		$e->IngresarEmpleado();
+		$archivos['foto']->moveTo($destino.$mail.".".$extension[0]);
+        $response->getBody()->write("se guardo el empleado");
 
         return $response;
 	}

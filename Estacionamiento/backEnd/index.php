@@ -6,7 +6,9 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require_once './composer/vendor/autoload.php';
 require_once './AccesoDatos.php';
 require_once './Modelo/Operacion.php';
+require_once './Modelo/Empleado.php';
 require_once './Aplicacion/OperacionService.php';
+require_once './Aplicacion/EmpleadoService.php';
 require_once './MW/AutentificadorJWT.php';
 
 
@@ -34,6 +36,20 @@ $app = new \Slim\App(["settings" => $config]);
   $this->put('/', \OperacionService::class . ':ModificarUno');
      
 });
+
+$app->group('/Empleado', function () {
+  
+   $this->get('/', \EmpleadoService::class . ':traerTodos');
+  
+   $this->get('/{id}', \EmpleadoService::class . ':traerUno');
+ 
+   $this->post('/', \EmpleadoService::class . ':CargarUno');
+ 
+   $this->delete('/', \EmpleadoService::class . ':BorrarUno');
+ 
+   $this->put('/', \EmpleadoService::class . ':ModificarUno');
+      
+ });
 
   $app->get('/crearToken/', function (Request $request, Response $response) {
       $datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");
