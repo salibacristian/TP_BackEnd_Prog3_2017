@@ -8,7 +8,7 @@ class Ingreso_empleado
 
 	 public function Ingresar()
 	 {
-		 //var_dump($this);die;
+		//var_dump($this);die;
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 		$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO Ingresos_empleados 
 		(fecha_hora_ingreso,id_empleado)

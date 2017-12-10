@@ -1,5 +1,5 @@
 ﻿1- ingresar auto 9/12
-2- nuevo empleado TEST 9/12
+2- nuevo empleado DONE
 3- modificar empleado 9/12
 4- borrar empleado 9/12
 5- sacar auto 9/12

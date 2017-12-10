@@ -33,7 +33,7 @@ class EmpleadoService extends Empleado //implements IApiUsable
 		$e->apellido=$apellido;
         $e->clave=$clave;
 		$e->mail=$mail;
-        $e->turno=$tuperfilrno;
+        $e->turno=$turno;
 		$e->perfil=$perfil;
 		$e->fecha_creacion=$fecha_creacion;
 
@@ -51,8 +51,8 @@ class EmpleadoService extends Empleado //implements IApiUsable
 		$archivos['foto']->moveTo($destino.$mail.".".$extension[0]);
 
 		$i = new Ingreso_empleado();
-		$e->fecha_hora_ingreso=$nombre;
-		$e->id_empleado = $id_empleado;
+		$i->fecha_hora_ingreso=$fecha_creacion;
+		$i->id_empleado = $id_empleado;
 		$i->Ingresar();
 
         $response->getBody()->write("se guardo el empleado");
