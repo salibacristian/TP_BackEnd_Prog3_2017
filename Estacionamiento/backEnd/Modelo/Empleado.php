@@ -35,37 +35,29 @@ class Empleado
 				// $consulta->execute();
 				// return $consulta->rowCount();
 
-	 // }
-	// public function ModificarCd()
-	 // {
+	 // }	
 
-			// $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			// $consulta =$objetoAccesoDato->RetornarConsulta("
-				// update cds 
-				// set titel='$this->titulo',
-				// interpret='$this->cantante',
-				// jahr='$this->año'
-				// WHERE id='$this->id'");
-			// return $consulta->execute();
-
-	 // }
-	
-
-	  // public function ModificarCdParametros()
-	 // {
-			// $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			// $consulta =$objetoAccesoDato->RetornarConsulta("
-				// update cds 
-				// set titel=:titulo,
-				// interpret=:cantante,
-				// jahr=:anio
-				// WHERE id=:id");
-			// $consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
-			// $consulta->bindValue(':titulo',$this->titulo, PDO::PARAM_INT);
-			// $consulta->bindValue(':anio', $this->año, PDO::PARAM_STR);
-			// $consulta->bindValue(':cantante', $this->cantante, PDO::PARAM_STR);
-			// return $consulta->execute();
-	 // }
+	  public function Modificar()
+	 {
+		//var_dump($this);die;
+		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+		$consulta =$objetoAccesoDato->RetornarConsulta("
+			update Empleados 
+			set 
+			nombre = :nombre,
+			apellido = :apellido,
+			clave = :clave,
+			turno = :turno,
+			perfil = :perfil
+			WHERE id =:id");
+		$consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
+		$consulta->bindValue(':nombre',$this->nombre, PDO::PARAM_STR);
+		$consulta->bindValue(':apellido', $this->apellido, PDO::PARAM_STR);
+		$consulta->bindValue(':clave', $this->clave, PDO::PARAM_STR);
+		$consulta->bindValue(':turno', $this->turno, PDO::PARAM_STR);
+		$consulta->bindValue(':perfil', $this->perfil, PDO::PARAM_STR);
+		return $consulta->execute();
+	 }
 
 	 public function IngresarEmpleado()
 	 {

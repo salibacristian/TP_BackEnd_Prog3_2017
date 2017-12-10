@@ -81,22 +81,22 @@ class EmpleadoService extends Empleado //implements IApiUsable
     //   	return $newResponse;
     // }
      
-     // public function ModificarUno($request, $response, $args) {
-     	// //$response->getBody()->write("<h1>Modificar  uno</h1>");
-     	// $ArrayDeParametros = $request->getParsedBody();
-	    // //var_dump($ArrayDeParametros);    	
-	    // $micd = new cd();
-	    // $micd->id=$ArrayDeParametros['id'];
-	    // $micd->titulo=$ArrayDeParametros['titulo'];
-	    // $micd->cantante=$ArrayDeParametros['cantante'];
-	    // $micd->año=$ArrayDeParametros['anio'];
-
-	   	// $resultado =$micd->ModificarCdParametros();
-	   	// $objDelaRespuesta= new stdclass();
-		// //var_dump($resultado);
-		// $objDelaRespuesta->resultado=$resultado;
-		// return $response->withJson($objDelaRespuesta, 200);		
-    // }
+     public function ModificarUno($request, $response, $args) {
+		$ArrayDeParametros = $request->getParsedBody();
+		//var_dump($ArrayDeParametros); 
+	    $e = new Empleado();
+	    $e->id=$ArrayDeParametros['id'];
+	    $e->nombre=$ArrayDeParametros['nombre'];
+	    $e->apellido=$ArrayDeParametros['apellido'];
+	    $e->clave=$ArrayDeParametros['clave'];
+	    $e->turno=$ArrayDeParametros['turno'];
+		$e->perfil=$ArrayDeParametros['perfil'];
+		$resultado =$e->Modificar();		
+	   	$objDelaRespuesta= new stdclass();
+		//var_dump($resultado);
+		$objDelaRespuesta->resultado=$resultado;
+		return $response->withJson($objDelaRespuesta, 200);		
+    }
 
 
 }
