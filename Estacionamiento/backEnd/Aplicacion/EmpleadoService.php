@@ -60,26 +60,26 @@ class EmpleadoService extends Empleado //implements IApiUsable
         return $response;
 	}
 	
-    //   public function BorrarUno($request, $response, $args) {
-    //  	$ArrayDeParametros = $request->getParsedBody();
-    //  	$id=$ArrayDeParametros['id'];
-    //  	$v= new Vehiculo();
-    //  	$v->id=$id;
-    //  	$cantidadDeBorrados=$v->BorrarVehiculo();
+      public function BorrarUno($request, $response, $args) {
+     	$ArrayDeParametros = $request->getParsedBody();
+     	$id=$ArrayDeParametros['id'];
+     	$e= new Empleado();
+     	$e->id=$id;
+     	$cantidadDeBorrados=$e->Borrar();
 
-    //  	$objDelaRespuesta= new stdclass();
-	//     $objDelaRespuesta->cantidad=$cantidadDeBorrados;
-	//     if($cantidadDeBorrados>0)
-	//     	{
-	//     		 $objDelaRespuesta->resultado="algo borro!!!";
-	//     	}
-	//     	else
-	//     	{
-	//     		$objDelaRespuesta->resultado="no Borro nada!!!";
-	//     	}
-	//     $newResponse = $response->withJson($objDelaRespuesta, 200);  
-    //   	return $newResponse;
-    // }
+     	$objDelaRespuesta= new stdclass();
+	    $objDelaRespuesta->cantidad=$cantidadDeBorrados;
+	    if($cantidadDeBorrados>0)
+	    	{
+	    		 $objDelaRespuesta->resultado="algo borro!!!";
+	    	}
+	    	else
+	    	{
+	    		$objDelaRespuesta->resultado="no Borro nada!!!";
+	    	}
+	    $newResponse = $response->withJson($objDelaRespuesta, 200);  
+      	return $newResponse;
+    }
      
      public function ModificarUno($request, $response, $args) {
 		$ArrayDeParametros = $request->getParsedBody();

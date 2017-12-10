@@ -11,31 +11,17 @@ class Empleado
 	public $fecha_creacion;
 	public $foto;
 
-  	// public function BorrarVehiculo()
-	//  {
-	//  		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-	// 		$consulta =$objetoAccesoDato->RetornarConsulta("
-	// 			delete 
-	// 			from Vehiculos 				
-	// 			WHERE id=:id");	
-	// 			$consulta->bindValue(':id',$this->id, PDO::PARAM_INT);		
-	// 			$consulta->execute();
-	// 			return $consulta->rowCount();
-	//  }
-
-	// public static function BorrarCdPorAnio($año)
-	 // {
-
-			// $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			// $consulta =$objetoAccesoDato->RetornarConsulta("
-				// delete 
-				// from cds 				
-				// WHERE jahr=:anio");	
-				// $consulta->bindValue(':anio',$año, PDO::PARAM_INT);		
-				// $consulta->execute();
-				// return $consulta->rowCount();
-
-	 // }	
+  	public function Borrar()
+	 {
+	 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+			$consulta =$objetoAccesoDato->RetornarConsulta("
+				delete 
+				from Empleados 				
+				WHERE id=:id");	
+				$consulta->bindValue(':id',$this->id, PDO::PARAM_INT);		
+				$consulta->execute();
+				return $consulta->rowCount();
+	 }
 
 	  public function Modificar()
 	 {
@@ -77,18 +63,6 @@ class Empleado
 		$consulta->execute();
 		return $objetoAccesoDato->RetornarUltimoIdInsertado();
 	 }
-	 // public function GuardarCD()
-	 // {
-
-	 	// if($this->id>0)
-	 		// {
-	 			// $this->ModificarCdParametros();
-	 		// }else {
-	 			// $this->InsertarElCdParametros();
-	 		// }
-
-	 // }
-
 
   	public static function TraerEmpleados()
 	{
