@@ -72,11 +72,11 @@ class Empleado
 		 //var_dump($this);die;
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 		$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO Empleados 
-		(nombre,apellido,calve,mail,turno,perfil,fecha_creacion,foto)
-		VALUES(:nombre,:apellido,:calve,:mail,:turno,:perfil,:fecha_creacion,:foto)");
+		(nombre,apellido,clave,mail,turno,perfil,fecha_creacion,foto)
+		VALUES(:nombre,:apellido,:clave,:mail,:turno,:perfil,:fecha_creacion,:foto)");
 		$consulta->bindValue(':nombre',$this->nombre, PDO::PARAM_STR);
 		$consulta->bindValue(':apellido',$this->apellido, PDO::PARAM_STR);
-		$consulta->bindValue(':calve', $this->calve, PDO::PARAM_INT);
+		$consulta->bindValue(':clave', $this->calve, PDO::PARAM_INT);
 		$consulta->bindValue(':mail', $this->mail, PDO::PARAM_STR);
 		$consulta->bindValue(':turno', $this->turno, PDO::PARAM_STR);
 		$consulta->bindValue(':perfil', $this->perfil, PDO::PARAM_STR);
