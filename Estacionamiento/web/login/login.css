@@ -423,18 +423,18 @@ input, button {
   font-size: 1.1rem;
 }
 .app__logout {
-  position: absolute;
-  bottom: 3.3rem;
-  right: 3.3rem;
-  width: 4.6rem;
-  height: 4.6rem;
-  margin-right: -2.3rem;
-  margin-bottom: -2.3rem;
-  background: #FC3768;
-  color: #fff;
-  font-size: 2rem;
-  border-radius: 50%;
-  cursor: pointer;
+     position: absolute;
+    bottom: 30.3rem;
+    right: 3.3rem;
+    width: 4.6rem;
+    height: 4.6rem;
+    margin-right: -1.3rem;
+    margin-bottom: -3.3rem;
+    background: #FC3768;
+    color: #fff;
+    font-size: 2rem;
+    border-radius: 50%;
+    cursor: pointer;
   -webkit-transition: bottom 0.4s 0.1s, right 0.4s 0.1s, opacity 0.1s 0.7s, background-color 0.1s 0.7s, -webkit-transform 0.4s 0.4s;
   transition: bottom 0.4s 0.1s, right 0.4s 0.1s, opacity 0.1s 0.7s, background-color 0.1s 0.7s, -webkit-transform 0.4s 0.4s;
   transition: bottom 0.4s 0.1s, right 0.4s 0.1s, transform 0.4s 0.4s, opacity 0.1s 0.7s, background-color 0.1s 0.7s;

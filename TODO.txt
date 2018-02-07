@@ -1,9 +1,6 @@
-﻿1- ingresar auto 9/12
-2- nuevo empleado DONE
-3- modificar empleado DONE
-4- borrar empleado DONE
-5- sacar auto 9/12
-6- logeo 10/12
-7- listados 11/12
-8- ?archivos excel y pdf 12/12
+﻿1- ingresar auto 
+5- sacar auto 
+6- logeo 
+7- listados 
+8- archivos excel y pdf 
 
