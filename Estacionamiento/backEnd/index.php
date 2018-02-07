@@ -50,6 +50,9 @@ $app->group('/Empleado', function () {
    $this->put('/', \EmpleadoService::class . ':ModificarUno');
       
  });
+ 
+ 
+ //jwt---------------------------------------------
 
   $app->get('/crearToken/', function (Request $request, Response $response) {
       $datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");

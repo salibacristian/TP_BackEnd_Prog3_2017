@@ -50,12 +50,7 @@ class EmpleadoService extends Empleado //implements IApiUsable
 		$id_empleado = $e->IngresarEmpleado();
 		$archivos['foto']->moveTo($destino.$mail.".".$extension[0]);
 
-		$i = new Ingreso_empleado();
-		$i->fecha_hora_ingreso=$fecha_creacion;
-		$i->id_empleado = $id_empleado;
-		$i->Ingresar();
-
-        $response->getBody()->write("se guardo el empleado");
+		$response->getBody()->write("se guardo el empleado");
 
         return $response;
 	}
