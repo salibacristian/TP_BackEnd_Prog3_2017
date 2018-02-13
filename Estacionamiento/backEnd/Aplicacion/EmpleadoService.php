@@ -1,6 +1,5 @@
 <?php
 require_once './Modelo/Empleado.php';
-require_once './Modelo/Ingreso_empleado.php';
 require_once './Interfaces/IApiUsable.php';
 
 class EmpleadoService extends Empleado //implements IApiUsable

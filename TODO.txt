@@ -9,8 +9,10 @@
 	DELETE  id
 	 
 ---------------------------------------------
+PENDING
 * ingresar auto 
 	insert operacion, insert empleado_ingreso
+	TESTING...
 
 * sacar auto 	
 	update operacion

@@ -1,5 +1,6 @@
 <?php
 require_once './Modelo/Operacion.php';
+require_once './Modelo/Ingreso_empleado.php';
 require_once './Interfaces/IApiUsable.php';
 
 class OperacionService extends Operacion //implements IApiUsable
@@ -16,39 +17,41 @@ class OperacionService extends Operacion //implements IApiUsable
     	return $response;
     }
       public function CargarUno($request, $response, $args) {
-     	 $ArrayDeParametros = $request->getParsedBody();
-        //var_dump($ArrayDeParametros);
-		$dominio= $ArrayDeParametros['dominio'];
-        $foto= $ArrayDeParametros['foto'];
-        $id_empleado_ingreso= $ArrayDeParametros['id_empleado_ingreso'];
-		$fecha_hora_ingreso= $ArrayDeParametros['fecha_hora_ingreso'];
-        $tiempo= $ArrayDeParametros['tiempo'];
-        $importe= $ArrayDeParametros['importe'];
-		$color= $ArrayDeParametros['color'];
-        
-        $o = new Operacion();
-		$o->dominio=$dominio;
-		$o->id_empleado_ingreso=$id_empleado_ingreso;
-        $o->fecha_hora_ingreso=$fecha_hora_ingreso;
-		$o->tiempo=$tiempo;
-        $o->importe=$importe;
-		$o->color=$color;
+      $ArrayDeParametros = $request->getParsedBody();
+      //var_dump($ArrayDeParametros);
+      $dominio= $ArrayDeParametros['dominio'];
+      $id_empleado_ingreso= $ArrayDeParametros['id_empleado_ingreso'];
+      $fecha_hora_ingreso= $ArrayDeParametros['fecha_hora_ingreso'];
+      $color= $ArrayDeParametros['color'];
 
-        $archivos = $request->getUploadedFiles();
-        $destino="./fotosVehiculos/";
-        //var_dump($archivos);
-        //var_dump($archivos['foto']);
+      $o = new Operacion();
+      $o->dominio=$dominio;
+      $o->id_empleado_ingreso=$id_empleado_ingreso;
+      $o->fecha_hora_ingreso=$fecha_hora_ingreso;
+      $o->tiempo=$tiempo;
+      $o->importe=$importe;
+      $o->color=$color;
 
-        $nombreAnterior=$archivos['foto']->getClientFilename();
-        $extension= explode(".", $nombreAnterior)  ;
-        //var_dump($nombreAnterior);die();
-        $extension=array_reverse($extension);
-		$o->foto=$dominio.".".$extension[0];
-		$o->IngresarOperacion();
-		$archivos['foto']->moveTo($destino.$dominio.".".$extension[0]);
-        $response->getBody()->write("se guardo la operacion");
+      $archivos = $request->getUploadedFiles();
+      $destino="./fotosVehiculos/";
+      //var_dump($archivos);
+      //var_dump($archivos['foto']);
 
-        return $response;
+      $nombreAnterior=$archivos['foto']->getClientFilename();
+      $extension= explode(".", $nombreAnterior)  ;
+      //var_dump($nombreAnterior);die();
+      $extension=array_reverse($extension);
+      $o->foto=$dominio.".".$extension[0];
+      $o->IngresarOperacion();
+      $archivos['foto']->moveTo($destino.$dominio.".".$extension[0]);
+      $response->getBody()->write("se guardo la operacion");
+
+      $i = new Ingreso_empleado();
+      $i->fecha_hora_ingreso = $fecha_hora_ingreso;
+      $i->id_empleado = $id_empleado_ingreso;
+      $i->Ingresar();
+
+      return $response;
 	}
 	
     //   public function BorrarUno($request, $response, $args) {
