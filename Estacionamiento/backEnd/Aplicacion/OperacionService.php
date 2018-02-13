@@ -28,8 +28,6 @@ class OperacionService extends Operacion //implements IApiUsable
       $o->dominio=$dominio;
       $o->id_empleado_ingreso=$id_empleado_ingreso;
       $o->fecha_hora_ingreso=$fecha_hora_ingreso;
-      $o->tiempo=$tiempo;
-      $o->importe=$importe;
       $o->color=$color;
 
       $archivos = $request->getUploadedFiles();
