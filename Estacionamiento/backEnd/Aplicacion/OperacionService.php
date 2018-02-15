@@ -73,22 +73,61 @@ class OperacionService extends Operacion //implements IApiUsable
     //   	return $newResponse;
     // }
      
-     // public function ModificarUno($request, $response, $args) {
-     	// //$response->getBody()->write("<h1>Modificar  uno</h1>");
-     	// $ArrayDeParametros = $request->getParsedBody();
-	    // //var_dump($ArrayDeParametros);    	
-	    // $micd = new cd();
-	    // $micd->id=$ArrayDeParametros['id'];
-	    // $micd->titulo=$ArrayDeParametros['titulo'];
-	    // $micd->cantante=$ArrayDeParametros['cantante'];
-	    // $micd->año=$ArrayDeParametros['anio'];
+     public function ModificarUno($request, $response, $args) {
+     $ArrayDeParametros = $request->getParsedBody();
+      var_dump($ArrayDeParametros);
 
-	   	// $resultado =$micd->ModificarCdParametros();
-	   	// $objDelaRespuesta= new stdclass();
-		// //var_dump($resultado);
-		// $objDelaRespuesta->resultado=$resultado;
-		// return $response->withJson($objDelaRespuesta, 200);		
-    // }
+      $o=Operacion::TraerOperacionPorDominio($ArrayDeParametros['dominio']);
+
+      //$o = new Operacion();
+      //$o->id=$ArrayDeParametros['id'];
+      //$o->nombre=$ArrayDeParametros['dominio'];
+      $o->id_empleado_salida = $ArrayDeParametros['id_empleado_salida'];//sacarlo del session
+      $today = getdate();
+      $o->fecha_hora_salida = $today->mday."/".$today->mon."/".$today->year." "
+      .$today->hours.":".$today->minutes;
+
+
+      //format date dd/mm/yyyy hh:mm
+
+      $dateTime = explode(" ", $o->fecha_hora_ingreso);
+      $date = explode("/", $dateTime[0]);
+      $time = explode(":", $dateTime[1]);
+      $day = intval($date[0],10);
+      $month = intval($date[1],10);
+      $year = intval($date[2],10);
+      $hour = intval($time[0],10);
+      $min = intval($time[1],10);
+      $ingreso = new DateTime(mktime($hour,$min,0,$month,$day,$year));
+      $now = new DateTime(date(DATE_ATOM));
+      $dif = $now ->diff($ingreso);
+      $o->tiempo =  $dif->h;
+      $o->importe = $this->CalculateImport($o->tiempo);  
+
+    $resultado =$o->Modificar();    
+      $objDelaRespuesta= new stdclass();
+    //var_dump($resultado);
+    $objDelaRespuesta->resultado=$resultado;
+    return $response->withJson($objDelaRespuesta, 200); 	
+    }
+
+     function CalculateImport($hours){
+      $days = 0;
+      $halfDays = 0;
+      $resto = $hours;
+      if($resto >= 24)
+      {
+          $days = intval($resto / 24);
+          $resto %= 24;
+      }
+      if($resto >= 12)
+      {
+        $halfDays = intval($resto / 12);
+        $resto %= 12;
+      }
+
+      return ($resto * 10) + ($halfDays * 90) + ($days * 170);
+    }
 
 
 }

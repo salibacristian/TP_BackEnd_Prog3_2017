@@ -7,15 +7,18 @@
 
 * borrar empleado 
 	DELETE  id
+
+* ingresar auto 
+	POST dominio id_empleado_ingreso fecha_hora_ingreso color foto
+
 	 
 ---------------------------------------------
 PENDING
-* ingresar auto 
-	insert operacion, insert empleado_ingreso
-	TESTING...
+
+falta marca del auto
 
 * sacar auto 	
-	update operacion
+	update operacion, el id del empleado obtenerlo de la sesion!!
 
 * logeo 
 
@@ -24,4 +27,5 @@ PENDING
 ---------------------------------------------
 CANCEL
 * archivos excel y pdf 
+
 

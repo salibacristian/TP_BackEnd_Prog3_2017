@@ -37,19 +37,25 @@ class Operacion
 				// return $consulta->rowCount();
 
 	 // }
-	// public function ModificarCd()
-	 // {
-
-			// $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			// $consulta =$objetoAccesoDato->RetornarConsulta("
-				// update cds 
-				// set titel='$this->titulo',
-				// interpret='$this->cantante',
-				// jahr='$this->año'
-				// WHERE id='$this->id'");
-			// return $consulta->execute();
-
-	 // }
+	public function Modificar()
+	 {
+		//var_dump($this);die;
+		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+		$consulta =$objetoAccesoDato->RetornarConsulta("
+			update Operaciones 
+			set 
+			id_empleado_salida = :id_empleado_salida,
+			fecha_hora_salida = :fecha_hora_salida,
+			tiempo = :tiempo,
+			importe = :importe		
+			WHERE id =:id");
+		$consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
+		$consulta->bindValue(':id_empleado_salida',$this->id_empleado_salida, PDO::PARAM_INT);
+		$consulta->bindValue(':fecha_hora_salida', $this->fecha_hora_salida, PDO::PARAM_STR);
+		$consulta->bindValue(':tiempo', $this->tiempo, PDO::PARAM_STR);
+		$consulta->bindValue(':importe', $this->importe, PDO::PARAM_STR);
+		return $consulta->execute();
+	  }
 	
 
 	  // public function ModificarCdParametros()
@@ -120,16 +126,17 @@ class Operacion
 			
 	}
 
-	// public static function TraerUnCdAnio($id,$anio) 
-	// {
-			// $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			// $consulta =$objetoAccesoDato->RetornarConsulta("select  titel as titulo, interpret as cantante,jahr as año from cds  WHERE id=? AND jahr=?");
-			// $consulta->execute(array($id, $anio));
-			// $cdBuscado= $consulta->fetchObject('cd');
-      		// return $cdBuscado;				
+	public static function TraerOperacionPorDominio($dominio) 
+	{
+			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+			$consulta =$objetoAccesoDato->RetornarConsulta("select  * from Operaciones WHERE dominio=? 
+				AND fecha_hora_salida is null");
+			$consulta->execute($dominio);
+			$o= $consulta->fetchObject('Operacion');
+      		return $o;				
 
 			
-	// }
+	}
 
 	// public static function TraerUnCdAnioParamNombre($id,$anio) 
 	// {
