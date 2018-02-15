@@ -75,10 +75,10 @@ class OperacionService extends Operacion //implements IApiUsable
      
      public function ModificarUno($request, $response, $args) {
      $ArrayDeParametros = $request->getParsedBody();
-      var_dump($ArrayDeParametros);
+      // var_dump($ArrayDeParametros);die();
 
       $o=Operacion::TraerOperacionPorDominio($ArrayDeParametros['dominio']);
-
+      if($o != null){
       //$o = new Operacion();
       //$o->id=$ArrayDeParametros['id'];
       //$o->nombre=$ArrayDeParametros['dominio'];
@@ -108,7 +108,9 @@ class OperacionService extends Operacion //implements IApiUsable
       $objDelaRespuesta= new stdclass();
     //var_dump($resultado);
     $objDelaRespuesta->resultado=$resultado;
-    return $response->withJson($objDelaRespuesta, 200); 	
+    return $response->withJson($objDelaRespuesta, 200); 
+    }	
+     return $response->getBody()->write("El auto no está"); 
     }
 
      function CalculateImport($hours){

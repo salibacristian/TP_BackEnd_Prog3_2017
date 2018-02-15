@@ -39,7 +39,7 @@ class Operacion
 	 // }
 	public function Modificar()
 	 {
-		//var_dump($this);die;
+		var_dump($this);die;
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 		$consulta =$objetoAccesoDato->RetornarConsulta("
 			update Operaciones 
@@ -126,12 +126,13 @@ class Operacion
 			
 	}
 
-	public static function TraerOperacionPorDominio($dominio) 
+	public static function TraerOperacionPorDominio($dom) 
 	{
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			$consulta =$objetoAccesoDato->RetornarConsulta("select  * from Operaciones WHERE dominio=? 
-				AND fecha_hora_salida is null");
-			$consulta->execute($dominio);
+			$consulta =$objetoAccesoDato->RetornarConsulta("select  * from Operaciones WHERE dominio =
+				:dominio AND fecha_hora_salida is null");
+			$consulta->bindValue(':dominio',$dom, PDO::PARAM_STR);
+			$consulta->execute();
 			$o= $consulta->fetchObject('Operacion');
       		return $o;				
 
