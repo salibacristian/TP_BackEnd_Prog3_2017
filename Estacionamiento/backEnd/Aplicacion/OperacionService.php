@@ -1,5 +1,6 @@
 <?php
 require_once './Modelo/Operacion.php';
+require_once './Modelo/Ingreso_empleado.php';
 require_once './Interfaces/IApiUsable.php';
 
 class OperacionService extends Operacion //implements IApiUsable
@@ -16,39 +17,39 @@ class OperacionService extends Operacion //implements IApiUsable
     	return $response;
     }
       public function CargarUno($request, $response, $args) {
-     	 $ArrayDeParametros = $request->getParsedBody();
-        //var_dump($ArrayDeParametros);
-		$dominio= $ArrayDeParametros['dominio'];
-        $foto= $ArrayDeParametros['foto'];
-        $id_empleado_ingreso= $ArrayDeParametros['id_empleado_ingreso'];
-		$fecha_hora_ingreso= $ArrayDeParametros['fecha_hora_ingreso'];
-        $tiempo= $ArrayDeParametros['tiempo'];
-        $importe= $ArrayDeParametros['importe'];
-		$color= $ArrayDeParametros['color'];
-        
-        $o = new Operacion();
-		$o->dominio=$dominio;
-		$o->id_empleado_ingreso=$id_empleado_ingreso;
-        $o->fecha_hora_ingreso=$fecha_hora_ingreso;
-		$o->tiempo=$tiempo;
-        $o->importe=$importe;
-		$o->color=$color;
+      $ArrayDeParametros = $request->getParsedBody();
+      //var_dump($ArrayDeParametros);
+      $dominio= $ArrayDeParametros['dominio'];
+      $id_empleado_ingreso= $ArrayDeParametros['id_empleado_ingreso'];
+      $fecha_hora_ingreso= $ArrayDeParametros['fecha_hora_ingreso'];
+      $color= $ArrayDeParametros['color'];
 
-        $archivos = $request->getUploadedFiles();
-        $destino="./fotosVehiculos/";
-        //var_dump($archivos);
-        //var_dump($archivos['foto']);
+      $o = new Operacion();
+      $o->dominio=$dominio;
+      $o->id_empleado_ingreso=$id_empleado_ingreso;
+      $o->fecha_hora_ingreso=$fecha_hora_ingreso;
+      $o->color=$color;
 
-        $nombreAnterior=$archivos['foto']->getClientFilename();
-        $extension= explode(".", $nombreAnterior)  ;
-        //var_dump($nombreAnterior);die();
-        $extension=array_reverse($extension);
-		$o->foto=$dominio.".".$extension[0];
-		$o->IngresarOperacion();
-		$archivos['foto']->moveTo($destino.$dominio.".".$extension[0]);
-        $response->getBody()->write("se guardo la operacion");
+      $archivos = $request->getUploadedFiles();
+      $destino="./fotosVehiculos/";
+      //var_dump($archivos);
+      //var_dump($archivos['foto']);
 
-        return $response;
+      $nombreAnterior=$archivos['foto']->getClientFilename();
+      $extension= explode(".", $nombreAnterior)  ;
+      //var_dump($nombreAnterior);die();
+      $extension=array_reverse($extension);
+      $o->foto=$dominio.".".$extension[0];
+      $o->IngresarOperacion();
+      $archivos['foto']->moveTo($destino.$dominio.".".$extension[0]);
+      $response->getBody()->write("se guardo la operacion");
+
+      $i = new Ingreso_empleado();
+      $i->fecha_hora_ingreso = $fecha_hora_ingreso;
+      $i->id_empleado = $id_empleado_ingreso;
+      $i->Ingresar();
+
+      return $response;
 	}
 	
     //   public function BorrarUno($request, $response, $args) {
@@ -72,22 +73,76 @@ class OperacionService extends Operacion //implements IApiUsable
     //   	return $newResponse;
     // }
      
-     // public function ModificarUno($request, $response, $args) {
-     	// //$response->getBody()->write("<h1>Modificar  uno</h1>");
-     	// $ArrayDeParametros = $request->getParsedBody();
-	    // //var_dump($ArrayDeParametros);    	
-	    // $micd = new cd();
-	    // $micd->id=$ArrayDeParametros['id'];
-	    // $micd->titulo=$ArrayDeParametros['titulo'];
-	    // $micd->cantante=$ArrayDeParametros['cantante'];
-	    // $micd->año=$ArrayDeParametros['anio'];
+     public function ModificarUno($request, $response, $args) {
+       $ArrayDeParametros = $request->getParsedBody();
+        // var_dump($ArrayDeParametros);die();
+        $o=Operacion::TraerOperacionPorDominio($ArrayDeParametros['dominio']);
+        if($o != null){
+          $o->id_empleado_salida = $ArrayDeParametros['id_empleado_salida'];//sacarlo del session
 
-	   	// $resultado =$micd->ModificarCdParametros();
-	   	// $objDelaRespuesta= new stdclass();
-		// //var_dump($resultado);
-		// $objDelaRespuesta->resultado=$resultado;
-		// return $response->withJson($objDelaRespuesta, 200);		
-    // }
+          //seteo hora local 
+          date_default_timezone_set('America/Argentina/Buenos_Aires');
+          $today = getdate();
+          //var_dump($today);
+
+          //GUARDO LA FECHA ACTUAL EN FORMATO PROPIO (dd/mm/yyyy hh:mm)
+          $o->fecha_hora_salida = $today['mday']."/".$today['mon']."/".$today['year']." "
+          .$today['hours'].":".$today['minutes'];
+          //var_dump($o->fecha_hora_salida);
+          
+          //...............................................................................
+
+          //necesito la fecha de ingreso a datetime para sacar el diff 
+          $dateAndTime = explode(" ", $o->fecha_hora_ingreso);//separo hora de la fecha
+          $date = explode("/", $dateAndTime[0]);//separo dia,mes y año
+          $time = explode(":", $dateAndTime[1]);//separo hora y minuto
+          $day = intval($date[0],10);
+          $month = intval($date[1],10);
+          $year = intval($date[2],10);
+          $hour = intval($time[0],10);
+          $min = intval($time[1],10);
+          $mktime = mktime($hour,$min,0,$month,$day,$year);
+          $ingreso = new DateTime(date(DATE_ATOM,$mktime));
+          var_dump($ingreso);
+
+          //...............................................................................
+
+          //ahora que tengo la fecha de ingreso saco dif con now
+          $now = new DateTime(date(DATE_ATOM));
+          var_dump($now);
+          $diff = date_diff($ingreso, $now);
+          //var_dump($diff);
+          $o->tiempo =  $diff->h + ($diff->d * 24);
+          var_dump($o->tiempo);
+          $o->importe = $this->CalculateImport($o->tiempo);
+          var_dump($o->importe); die();
+
+          $resultado =$o->Modificar();    
+          $objDelaRespuesta= new stdclass();
+          //var_dump($resultado);
+          $objDelaRespuesta->resultado=$resultado;
+          return $response->withJson($objDelaRespuesta, 200); 
+        }	
+       return $response->getBody()->write("El auto no está"); 
+    }
+
+     function CalculateImport($hours){
+      $days = 0;
+      $halfDays = 0;
+      $resto = $hours;
+      if($resto >= 24)
+      {
+          $days = intval($resto / 24);
+          $resto %= 24;
+      }
+      if($resto >= 12)
+      {
+        $halfDays = intval($resto / 12);
+        $resto %= 12;
+      }
+
+      return ($resto * 10) + ($halfDays * 90) + ($days * 170);
+    }
 
 
 }

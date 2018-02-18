@@ -1,6 +1,31 @@
-﻿1- ingresar auto 
-5- sacar auto 
-6- logeo 
-7- listados 
-8- archivos excel y pdf 
+﻿ DONE
+* nuevo empleado 
+	POST nombre apellido clave mail turno perfil fecha_creacion foto
+
+* modificar empleado 
+	PUT ['id']['nombre']['apellido']['clave']['turno']['perfil']
+
+* borrar empleado 
+	DELETE  id
+
+* ingresar auto 
+	POST dominio id_empleado_ingreso fecha_hora_ingreso color foto
+
+	 
+---------------------------------------------
+PENDING
+
+falta marca del auto
+
+* sacar auto 	
+	update operacion, el id del empleado obtenerlo de la sesion!!
+
+* logeo 
+
+* listados 
+
+---------------------------------------------
+CANCEL
+* archivos excel y pdf 
+
 
