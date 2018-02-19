@@ -17,7 +17,7 @@ class EmpleadoService extends Empleado //implements IApiUsable
     }
       public function CargarUno($request, $response, $args) {
      	 $ArrayDeParametros = $request->getParsedBody();
-        //var_dump($ArrayDeParametros);
+        var_dump($ArrayDeParametros);die();
 		$nombre= $ArrayDeParametros['nombre'];
         $apellido= $ArrayDeParametros['apellido'];
         $clave= $ArrayDeParametros['clave'];

@@ -15,12 +15,12 @@
 ---------------------------------------------
 PENDING
 
-falta marca del auto
-
-* sacar auto 	
-	update operacion, el id del empleado obtenerlo de la sesion!!
-
 * logeo 
+	-investigar $session	
+	-crearToken devuelve el token que se puede ser verificado, la funionalidad debe ser verificar token, cada vez que se le peg al backend, con un MW
+	-ademas de crear token, al iniciar sesion se debe guardar en un txt los ingresos
+
+*cocheras
 
 * listados 
 

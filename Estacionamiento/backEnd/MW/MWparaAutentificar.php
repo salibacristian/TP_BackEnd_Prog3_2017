@@ -1,6 +1,6 @@
 <?php
 
-
+require_once './AutentificadorJWT.php';
 class MWparaAutentificar
 {
  /**
@@ -17,7 +17,7 @@ class MWparaAutentificar
    * @apiExample Como usarlo:
    *    ->add(\MWparaAutenticar::class . ':VerificarUsuario')
    */
-	public function VerificarUsuario($request, $response, $next) {
+	public static function VerificarUsuario($request, $response, $next) {
          
 
 		  if($request->isGet())
@@ -27,7 +27,7 @@ class MWparaAutentificar
 		  }
 		  else
 		  {
-
+	  		//aqui buscar en la tabla empleados
 		    $response->getBody()->write('<p>verifico credenciales</p>');
 		    $ArrayDeParametros = $request->getParsedBody();
 		    $nombre=$ArrayDeParametros['nombre'];
@@ -46,5 +46,21 @@ class MWparaAutentificar
 		  $objRespuesta->datos="algo";
 		  $response->getBody()->write('<p>vuelvo del verificador de credenciales</p>');
 		  return $response;   
+	}
+
+	public static function VerificarToken($request, $response, $next) {
+       $response->getBody()->write('<p>recibi token!</p>');
+      var_dump($ArrayDeParametros['token']);
+      try 
+      {
+      	$ArrayDeParametros = $request->getParsedBody();
+        AutentificadorJWT::verificarToken($ArrayDeParametros['token']);
+        $response = $next($request, $response);      
+      }
+      catch (Exception $e) {      
+        //guardar en un log
+        echo $e;
+      }  
+      return $response;
 	}
 }
