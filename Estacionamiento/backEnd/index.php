@@ -56,8 +56,8 @@ $app->group('/Empleado', function () {
  })->add(\MWparaAutentificar::class . ':VerificarToken');
 
 $app->get('/cocheras/', function (Request $request, Response $response) {
-      $libres = $request->params('libres');
-      $cocheras= Cochera::TraerCocheras($libres); 
+      $params = $request->getParams();
+      $cocheras= Cochera::TraerCocheras($params['libres']); 
       $newResponse = $response->withJson($cocheras, 200); 
       return $newResponse;
   });

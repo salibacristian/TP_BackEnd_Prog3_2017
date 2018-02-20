@@ -14,7 +14,7 @@ class AutentificadorJWT
 
         $payload = array(
         	'iat'=>$ahora,
-            'exp' => $ahora + (15),
+            'exp' => $ahora + (240),
             'aud' => self::Aud(),
             'data' => $datos,
             'app'=> "API REST ESTACIONAMIENTO 2018"

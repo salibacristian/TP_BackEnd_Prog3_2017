@@ -41,7 +41,7 @@ class Operacion
 	 // }
 	public function Modificar()
 	 {
-		var_dump($this);die;
+		// var_dump($this);die;
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 		$consulta =$objetoAccesoDato->RetornarConsulta("
 			update Operaciones 

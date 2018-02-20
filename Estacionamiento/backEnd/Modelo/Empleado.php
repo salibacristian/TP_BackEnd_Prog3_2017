@@ -69,7 +69,7 @@ class Empleado
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 			$consulta =$objetoAccesoDato->RetornarConsulta("select * from Empleados");
 			$consulta->execute();			
-			return $consulta->fetchAll(PDO::FETCH_CLASS, "Operacion");		
+			return $consulta->fetchAll(PDO::FETCH_CLASS, "Empleado");		
 	}
 
 	public static function TraerEmpleado($id) 

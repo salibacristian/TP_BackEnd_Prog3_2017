@@ -24,6 +24,7 @@ class MWparaAutentificar
 			    $objDelaRespuesta->token=AutentificadorJWT::CrearToken(array('usuario' => $usr->mail,'perfil' => $usr->perfil));
 
 				$data = Session::getInstance();
+				$data->set('userId', $usr->id);
 				$data->set('mail', $usr->mail);
 				$data->set('perfil', $usr->perfil);
 				$data->set('token', $objDelaRespuesta->token);
@@ -52,8 +53,6 @@ class MWparaAutentificar
 	}
 
 	public static function VerificarToken($request, $response, $next) {
-       $response->getBody()->write('<p>recibi token!</p>');
-      var_dump($ArrayDeParametros['token']);
       try 
       {
       	$ArrayDeParametros = $request->getParsedBody();

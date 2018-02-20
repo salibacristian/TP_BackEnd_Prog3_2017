@@ -9,10 +9,11 @@ class Cochera
 
 	public static function TraerCocheras($libres) 
 	{
+		$enUso = $libres? 0 : 1;
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 			$consulta =$objetoAccesoDato->RetornarConsulta("select  * from Cocheras WHERE enUso =
-				:libres");
-			$consulta->bindValue(':libres',$libres, PDO::PARAM_BOOL);
+				:enUso");
+			$consulta->bindValue(':enUso',$enUso, PDO::PARAM_INT);
 			$consulta->execute();
 			return $consulta->fetchAll(PDO::FETCH_CLASS, "Cochera");	
 			
@@ -25,10 +26,10 @@ class Cochera
 		$consulta =$objetoAccesoDato->RetornarConsulta("
 			update Cocheras 
 			set 
-			enUso = :enUso,
+			enUso = :enUso
 			WHERE id =:id");
 		$consulta->bindValue(':id',$id, PDO::PARAM_INT); 
-		$consulta->bindValue(':enUso',$enUso, PDO::PARAM_BOOL); 
+		$consulta->bindValue(':enUso',$enUso, PDO::PARAM_INT); 
 		
 		return $consulta->execute();
 	  }
