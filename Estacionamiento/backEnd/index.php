@@ -11,7 +11,7 @@ require_once './Aplicacion/OperacionService.php';
 require_once './Aplicacion/EmpleadoService.php';
 require_once './AutentificadorJWT.php';
 require_once './MW/MWparaAutentificar.php';
-require_once './Aplication/SessionService.php';
+require_once './Aplicacion/SessionService.php';
 
 
 $config['displayErrorDetails'] = true;

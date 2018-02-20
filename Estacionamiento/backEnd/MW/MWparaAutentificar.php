@@ -1,7 +1,7 @@
 <?php
 
 require_once './AutentificadorJWT.php';
-require_once './Aplication/SessionService.php';
+// require_once './Aplication/SessionService.php';
 class MWparaAutentificar
 {
  
@@ -20,14 +20,13 @@ class MWparaAutentificar
 		    $usr = EmpleadoService::VerificarUsuario($request,$response);
 	    	if($usr != null){
 			    $objDelaRespuesta= new stdclass();
-			    $objDelaRespuesta->token=AutentificadorJWT::CrearToken(array('usuario' => $usr->mail,'perfil' => $usr->perfil);
+			    $objDelaRespuesta->token=AutentificadorJWT::CrearToken(array('usuario' => $usr->mail,'perfil' => $usr->perfil));
 
 				$data = Session::getInstance();
 				$data->mail = $usr->mail;
 				$data->perfil = $usr->perfil;
 				
-				$aud = AutentificadorJWT::ObtenerPayLoad($objDelaRespuesta->token)->aud;
-		    	$this->RegistrarInicio($data,$aud);
+		    	MWparaAutentificar::RegistrarInicio($data);
 			  
 			    $response = $response->withJson($objDelaRespuesta, 200);  
 
@@ -41,9 +40,9 @@ class MWparaAutentificar
 		  return $response;   
 	}
 
-	private function RegistrarInicio($data,$aud){
+	 static function RegistrarInicio($data){
 		$file = fopen("ingresos.txt", "a");
-		$date = new DateTime(date(DATE_ATOM));
+		$date = date(DATE_ATOM);
 		fwrite($file, $data->mail . '-' . $date . '-' . $aud . PHP_EOL);
 
 		fclose($file);
