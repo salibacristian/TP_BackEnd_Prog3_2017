@@ -76,7 +76,8 @@ class Empleado
 	{
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 			$consulta =$objetoAccesoDato->RetornarConsulta("select *
-			from Empleados where id = $id");
+			from Empleados where id = :id");
+			$consulta->bindValue(':id',$id, PDO::PARAM_INT);
 			$consulta->execute();
 			$v= $consulta->fetchObject('Empleado');
 			return $v;				

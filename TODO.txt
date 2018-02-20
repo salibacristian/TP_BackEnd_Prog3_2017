@@ -27,13 +27,9 @@
 ---------------------------------------------
 PENDING
 
-*cocheras testing
-
 * listados 
 
-*suspender empleado(no se puede logear)
-
-*permisos
+* permisos
 
 
 

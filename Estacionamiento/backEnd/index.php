@@ -45,13 +45,15 @@ $app->group('/Empleado', function () {
   
    $this->get('/', \EmpleadoService::class . ':traerTodos');
   
-   $this->get('/{id}', \EmpleadoService::class . ':traerUno');
+   $this->get('/empleado/', \EmpleadoService::class . ':traerUno');
  
    $this->post('/', \EmpleadoService::class . ':CargarUno');
  
    $this->delete('/', \EmpleadoService::class . ':BorrarUno');
  
    $this->put('/', \EmpleadoService::class . ':ModificarUno');
+
+   $this->get('/ingresos/', \EmpleadoService::class . ':TraerIngresos');
       
  })->add(\MWparaAutentificar::class . ':VerificarToken');
 
