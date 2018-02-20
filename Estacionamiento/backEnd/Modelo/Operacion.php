@@ -3,6 +3,7 @@ class Operacion
 {
 	public $id;
 	public $dominio;
+	public $marca;
  	public $foto;
 	public $id_empleado_ingreso;
 	public $id_empleado_salida;
@@ -11,6 +12,7 @@ class Operacion
 	public $tiempo;
 	public $importe;
 	public $color;
+	public $cocheraId;
 
   	// public function BorrarVehiculo()
 	//  {
@@ -47,7 +49,8 @@ class Operacion
 			id_empleado_salida = :id_empleado_salida,
 			fecha_hora_salida = :fecha_hora_salida,
 			tiempo = :tiempo,
-			importe = :importe		
+			importe = :importe,
+			cocheraId = null		
 			WHERE id =:id");
 		$consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
 		$consulta->bindValue(':id_empleado_salida',$this->id_empleado_salida, PDO::PARAM_INT);
@@ -79,9 +82,10 @@ class Operacion
 		 //var_dump($this);die;
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 		$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO Operaciones 
-		(dominio,foto,id_empleado_ingreso,id_empleado_salida,fecha_hora_ingreso,fecha_hora_salida,tiempo,importe,color)
-		VALUES(:dominio,:foto,:id_empleado_ingreso,:id_empleado_salida,:fecha_hora_ingreso,:fecha_hora_salida,:tiempo,:importe,:color)");
+		(dominio,marca,foto,id_empleado_ingreso,id_empleado_salida,fecha_hora_ingreso,fecha_hora_salida,tiempo,importe,color,cocheraId)
+		VALUES(:dominio,:marca,:foto,:id_empleado_ingreso,:id_empleado_salida,:fecha_hora_ingreso,:fecha_hora_salida,:tiempo,:importe,:color,:cocheraId)");
 		$consulta->bindValue(':dominio',$this->dominio, PDO::PARAM_STR);
+		$consulta->bindValue(':marca',$this->marca, PDO::PARAM_STR);
 		$consulta->bindValue(':foto',$this->foto, PDO::PARAM_STR);
 		$consulta->bindValue(':id_empleado_ingreso', $this->id_empleado_ingreso, PDO::PARAM_INT);
 		$consulta->bindValue(':id_empleado_salida', $this->id_empleado_salida, PDO::PARAM_INT);
@@ -90,6 +94,7 @@ class Operacion
 		$consulta->bindValue(':tiempo', $this->tiempo, PDO::PARAM_INT);
 		$consulta->bindValue(':importe', $this->importe, PDO::PARAM_STR);
 		$consulta->bindValue(':color', $this->color, PDO::PARAM_STR);
+		$consulta->bindValue(':cocheraId', $this->cocheraId, PDO::PARAM_INT);
 		$consulta->execute();
 		return $objetoAccesoDato->RetornarUltimoIdInsertado();
 	 }

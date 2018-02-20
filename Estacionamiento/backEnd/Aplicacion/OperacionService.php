@@ -1,5 +1,6 @@
 <?php
 require_once './Modelo/Operacion.php';
+require_once './Modelo/Cochera.php';
 require_once './Modelo/Ingreso_empleado.php';
 require_once './Interfaces/IApiUsable.php';
 
@@ -20,15 +21,22 @@ class OperacionService extends Operacion //implements IApiUsable
       $ArrayDeParametros = $request->getParsedBody();
       //var_dump($ArrayDeParametros);
       $dominio= $ArrayDeParametros['dominio'];
+      $marca= $ArrayDeParametros['marca'];
+      $cocheraId= $ArrayDeParametros['cocheraId'];
       $id_empleado_ingreso= $ArrayDeParametros['id_empleado_ingreso'];
       $fecha_hora_ingreso= $ArrayDeParametros['fecha_hora_ingreso'];
       $color= $ArrayDeParametros['color'];
 
       $o = new Operacion();
       $o->dominio=$dominio;
+      $o->marca=$marca;
+      $o->cocheraId=$cocheraId;
       $o->id_empleado_ingreso=$id_empleado_ingreso;
       $o->fecha_hora_ingreso=$fecha_hora_ingreso;
       $o->color=$color;
+
+      //ocupo cochera
+      Cochera::Modificar($o->cocheraId,true);
 
       $archivos = $request->getUploadedFiles();
       $destino="./fotosVehiculos/";
@@ -115,12 +123,16 @@ class OperacionService extends Operacion //implements IApiUsable
           $o->tiempo =  $diff->h + ($diff->d * 24);
           var_dump($o->tiempo);
           $o->importe = $this->CalculateImport($o->tiempo);
-          var_dump($o->importe); die();
+          // var_dump($o->importe); die();
+
+          //libero cochera
+          Cochera::Modificar($o->cocheraId,false);
 
           $resultado =$o->Modificar();    
           $objDelaRespuesta= new stdclass();
           //var_dump($resultado);
           $objDelaRespuesta->resultado=$resultado;
+
           return $response->withJson($objDelaRespuesta, 200); 
         }	
        return $response->getBody()->write("El auto no está"); 
