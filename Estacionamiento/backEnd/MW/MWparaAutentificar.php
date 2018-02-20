@@ -26,7 +26,8 @@ class MWparaAutentificar
 				$data = Session::getInstance();
 				$data->set('mail', $usr->mail);
 				$data->set('perfil', $usr->perfil);
-				 $objDelaRespuesta->session = $data->get('mail');
+				$data->set('token', $objDelaRespuesta->token);
+				$objDelaRespuesta->session = $data->get('mail');
 				
 		    	MWparaAutentificar::RegistrarInicio($data);
 			  
@@ -45,7 +46,7 @@ class MWparaAutentificar
 	 static function RegistrarInicio($data){
 		$file = fopen("ingresos.txt", "a");
 		$date = date(DATE_ATOM);
-		fwrite($file, $data->mail . '-' . $date . '-' . $aud . PHP_EOL);
+		fwrite($file, $data->get('mail') . '-' . $date . PHP_EOL);
 
 		fclose($file);
 	}
@@ -56,7 +57,9 @@ class MWparaAutentificar
       try 
       {
       	$ArrayDeParametros = $request->getParsedBody();
-        AutentificadorJWT::verificarToken($ArrayDeParametros['token']);
+        // AutentificadorJWT::verificarToken($ArrayDeParametros['token']);
+        $data = Session::getInstance();
+        AutentificadorJWT::verificarToken($data->get('token'));
         $response = $next($request, $response);      
       }
       catch (Exception $e) {      

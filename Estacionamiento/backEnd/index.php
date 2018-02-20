@@ -37,7 +37,7 @@ $app = new \Slim\App(["settings" => $config]);
 
   $this->put('/', \OperacionService::class . ':ModificarUno');
      
-});
+})->add(\MWparaAutentificar::class . ':VerificarToken');
 
 $app->group('/Empleado', function () {
   
