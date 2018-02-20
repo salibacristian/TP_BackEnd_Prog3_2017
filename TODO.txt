@@ -1,19 +1,21 @@
 ﻿ DONE
 * nuevo empleado 
-	POST nombre apellido clave mail turno perfil fecha_creacion foto
+	POST nombre apellido clave mail turno perfil  foto(nulleable)
 
 * modificar empleado 
-	PUT ['id']['nombre']['apellido']['clave']['turno']['perfil']
+	PUT ['id']['nombre']['apellido']['clave']['turno']['perfil'] (recordar x-www-from-urlencoded, sin header)
 
 * borrar empleado 
 	DELETE  id
 
 * ingresar auto 
-	POST dominio id_empleado_ingreso fecha_hora_ingreso color foto
+	POST dominio marca color foto cocheraId
 
-	 
----------------------------------------------
-PENDING
+*sacar auto
+	PUT dominio
+
+*traer cocheras
+	GET ['libres'](0 o 1)
 
 * logeo 
 	-post a login busca el usr y pass en db y si lo encuentra inicia la sesion,crea token, registra en txt 
@@ -21,12 +23,32 @@ PENDING
 	-verificar token, cada vez que se le pegue al backend, con el MW
 	-get al logout hace session destroy
 
-*cocheras
+	 
+---------------------------------------------
+PENDING
+
+*cocheras testing
 
 * listados 
+
+*suspender empleado(no se puede logear)
+
+*permisos
+
+
 
 ---------------------------------------------
 CANCEL
 * archivos excel y pdf 
+
+---------------------------------------------
+test
+
+1 nuevo empleado(traer todos/uno) OK
+2 modificar empleado(traer uno) OK
+3 borrar empleado(traer todos) OK
+4 obtener cochera OK
+5 ingresar vehiculo(primero obtener la cochera)(traer todos) OK
+6 sacar vehiculo(traer todos) OK
 
 

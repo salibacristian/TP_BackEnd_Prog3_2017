@@ -24,15 +24,18 @@ class EmpleadoService extends Empleado //implements IApiUsable
     }
       public function CargarUno($request, $response, $args) {
      	 $ArrayDeParametros = $request->getParsedBody();
-        var_dump($ArrayDeParametros);die();
+       // var_dump($ArrayDeParametros);die();
 		$nombre= $ArrayDeParametros['nombre'];
         $apellido= $ArrayDeParametros['apellido'];
         $clave= $ArrayDeParametros['clave'];
 		$mail= $ArrayDeParametros['mail'];
         $turno= $ArrayDeParametros['turno'];
         $perfil= $ArrayDeParametros['perfil'];
-        $fecha_creacion= $ArrayDeParametros['fecha_creacion'];
-
+        // $fecha_creacion= $ArrayDeParametros['fecha_creacion'];
+        //seteo hora local 
+          date_default_timezone_set('America/Argentina/Buenos_Aires');
+          $today = getdate();
+          //var_dump($today);          
         
         $e = new Empleado();
 		$e->nombre=$nombre;
@@ -41,21 +44,26 @@ class EmpleadoService extends Empleado //implements IApiUsable
 		$e->mail=$mail;
         $e->turno=$turno;
 		$e->perfil=$perfil;
-		$e->fecha_creacion=$fecha_creacion;
+		//GUARDO LA FECHA ACTUAL EN FORMATO PROPIO (dd/mm/yyyy hh:mm)
+          $e->fecha_creacion = $today['mday']."/".$today['mon']."/".$today['year']." "
+          .$today['hours'].":".$today['minutes'];
 
         $archivos = $request->getUploadedFiles();
         $destino="./fotosEmpleados/";
         //var_dump($archivos);
         //var_dump($archivos['foto']);
 
+        if(isset($archivos['foto']))
+        {
         $nombreAnterior=$archivos['foto']->getClientFilename();
         $extension= explode(".", $nombreAnterior);
         //var_dump($nombreAnterior);die();
         $extension=array_reverse($extension);
 		$e->foto=$mail.".".$extension[0];
-		$id_empleado = $e->IngresarEmpleado();
+		
 		$archivos['foto']->moveTo($destino.$mail.".".$extension[0]);
-
+        }
+        $id_empleado = $e->IngresarEmpleado();
 		$response->getBody()->write("se guardo el empleado");
 
         return $response;

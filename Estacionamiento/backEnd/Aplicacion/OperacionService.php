@@ -1,7 +1,9 @@
 <?php
 require_once './Modelo/Operacion.php';
+require_once './Modelo/Cochera.php';
 require_once './Modelo/Ingreso_empleado.php';
 require_once './Interfaces/IApiUsable.php';
+require_once './Aplicacion/SessionService.php';
 
 class OperacionService extends Operacion //implements IApiUsable
 {
@@ -20,15 +22,30 @@ class OperacionService extends Operacion //implements IApiUsable
       $ArrayDeParametros = $request->getParsedBody();
       //var_dump($ArrayDeParametros);
       $dominio= $ArrayDeParametros['dominio'];
-      $id_empleado_ingreso= $ArrayDeParametros['id_empleado_ingreso'];
-      $fecha_hora_ingreso= $ArrayDeParametros['fecha_hora_ingreso'];
+      $marca= $ArrayDeParametros['marca'];
+      $cocheraId= $ArrayDeParametros['cocheraId'];
+      $id_empleado_ingreso= $_SESSION['userId'];
+       //seteo hora local 
+          date_default_timezone_set('America/Argentina/Buenos_Aires');
+          $today = getdate();
+          //var_dump($today);
+
+          //GUARDO LA FECHA ACTUAL EN FORMATO PROPIO (dd/mm/yyyy hh:mm)
+          $fecha_hora_ingreso = $today['mday']."/".$today['mon']."/".$today['year']." "
+          .$today['hours'].":".$today['minutes'];
+     
       $color= $ArrayDeParametros['color'];
 
       $o = new Operacion();
       $o->dominio=$dominio;
+      $o->marca=$marca;
+      $o->cocheraId=$cocheraId;
       $o->id_empleado_ingreso=$id_empleado_ingreso;
       $o->fecha_hora_ingreso=$fecha_hora_ingreso;
       $o->color=$color;
+
+      //ocupo cochera
+      Cochera::Modificar($o->cocheraId,1);
 
       $archivos = $request->getUploadedFiles();
       $destino="./fotosVehiculos/";
@@ -78,7 +95,7 @@ class OperacionService extends Operacion //implements IApiUsable
         // var_dump($ArrayDeParametros);die();
         $o=Operacion::TraerOperacionPorDominio($ArrayDeParametros['dominio']);
         if($o != null){
-          $o->id_empleado_salida = $ArrayDeParametros['id_empleado_salida'];//sacarlo del session
+          $o->id_empleado_salida = $_SESSION['userId'];
 
           //seteo hora local 
           date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -103,24 +120,28 @@ class OperacionService extends Operacion //implements IApiUsable
           $min = intval($time[1],10);
           $mktime = mktime($hour,$min,0,$month,$day,$year);
           $ingreso = new DateTime(date(DATE_ATOM,$mktime));
-          var_dump($ingreso);
+          // var_dump($ingreso);
 
           //...............................................................................
 
           //ahora que tengo la fecha de ingreso saco dif con now
           $now = new DateTime(date(DATE_ATOM));
-          var_dump($now);
+          // var_dump($now);
           $diff = date_diff($ingreso, $now);
           //var_dump($diff);
           $o->tiempo =  $diff->h + ($diff->d * 24);
-          var_dump($o->tiempo);
+          // var_dump($o->tiempo);
           $o->importe = $this->CalculateImport($o->tiempo);
-          var_dump($o->importe); die();
+          // var_dump($o->importe); die();
+
+          //libero cochera
+          Cochera::Modificar($o->cocheraId,0);
 
           $resultado =$o->Modificar();    
           $objDelaRespuesta= new stdclass();
           //var_dump($resultado);
           $objDelaRespuesta->resultado=$resultado;
+
           return $response->withJson($objDelaRespuesta, 200); 
         }	
        return $response->getBody()->write("El auto no está"); 
