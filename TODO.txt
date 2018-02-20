@@ -15,12 +15,13 @@
 ---------------------------------------------
 PENDING
 
-falta marca del auto
-
-* sacar auto 	
-	update operacion, el id del empleado obtenerlo de la sesion!!
-
 * logeo 
+	-post a login busca el usr y pass en db y si lo encuentra inicia la sesion,crea token, registra en txt 
+	y devuelve un token	
+	-verificar token, cada vez que se le pegue al backend, con el MW
+	-get al logout hace session destroy
+
+*cocheras
 
 * listados 
 
