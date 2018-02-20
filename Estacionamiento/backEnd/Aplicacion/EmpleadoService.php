@@ -124,10 +124,18 @@ class EmpleadoService extends Empleado //implements IApiUsable
                 }
             }
             
-            var_dump($objDelaRespuesta);die();
+            //var_dump($objDelaRespuesta);die();
             fclose($file);
         }
 
+        return $response->withJson($objDelaRespuesta, 200);      
+    }
+
+    public function TraerOperaciones($request, $response, $args) {
+        $objDelaRespuesta= new stdclass();
+         $e = new Empleado();
+         $rtdo = $e->TraerOperaciones();//deberia ser estatico pero no me anda
+         $objDelaRespuesta->resultado = $rtdo;
         return $response->withJson($objDelaRespuesta, 200);      
     }
 

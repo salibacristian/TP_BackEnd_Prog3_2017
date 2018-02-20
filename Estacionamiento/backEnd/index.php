@@ -54,6 +54,8 @@ $app->group('/Empleado', function () {
    $this->put('/', \EmpleadoService::class . ':ModificarUno');
 
    $this->get('/ingresos/', \EmpleadoService::class . ':TraerIngresos');
+
+   $this->get('/operaciones/', \EmpleadoService::class . ':TraerOperaciones');
       
  })->add(\MWparaAutentificar::class . ':VerificarToken');
 
