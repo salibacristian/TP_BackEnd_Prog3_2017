@@ -61,7 +61,7 @@ class Session
     *    @return    void
     **/
     
-    public function __set( $name , $value )
+    public function set( $name , $value )
     {
         $_SESSION[$name] = $value;
     }
@@ -75,7 +75,7 @@ class Session
     *    @return    mixed    Datas stored in session.
     **/
     
-    public function __get( $name )
+    public function get( $name )
     {
         if ( isset($_SESSION[$name]))
         {

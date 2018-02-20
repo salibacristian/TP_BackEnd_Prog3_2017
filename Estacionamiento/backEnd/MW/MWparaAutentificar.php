@@ -20,11 +20,13 @@ class MWparaAutentificar
 		    $usr = EmpleadoService::VerificarUsuario($request,$response);
 	    	if($usr != null){
 			    $objDelaRespuesta= new stdclass();
+			    $objDelaRespuesta->user =  $usr;
 			    $objDelaRespuesta->token=AutentificadorJWT::CrearToken(array('usuario' => $usr->mail,'perfil' => $usr->perfil));
 
 				$data = Session::getInstance();
-				$data->mail = $usr->mail;
-				$data->perfil = $usr->perfil;
+				$data->set('mail', $usr->mail);
+				$data->set('perfil', $usr->perfil);
+				 $objDelaRespuesta->session = $data->get('mail');
 				
 		    	MWparaAutentificar::RegistrarInicio($data);
 			  

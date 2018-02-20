@@ -14,8 +14,7 @@ class EmpleadoService extends Empleado //implements IApiUsable
     public static function VerificarUsuario($request, $response) {
         $ArrayDeParametros = $request->getParsedBody();
         $e=Empleado::VerificarEmpleado($ArrayDeParametros['mail'],$ArrayDeParametros['clave']);
-        $newResponse = $response->withJson($e, 200);  
-        return $newResponse;
+        return $e;
     }
 
      public function TraerTodos($request, $response, $args) {
