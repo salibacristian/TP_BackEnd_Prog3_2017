@@ -12,6 +12,8 @@ require_once './Aplicacion/EmpleadoService.php';
 require_once './AutentificadorJWT.php';
 require_once './MW/MWparaAutentificar.php';
 require_once './Aplicacion/SessionService.php';
+require_once './Modelo/Cochera.php';
+
 
 
 $config['displayErrorDetails'] = true;
@@ -20,10 +22,10 @@ $config['addContentLengthHeader'] = false;
 
 $app = new \Slim\App(["settings" => $config]);
 
-  $app->get('[/]', function (Request $request, Response $response) {    
-    $response->getBody()->write("GET => Bienvenido!!! ,a SlimFramework");
-    return $response;
-  });
+  // $app->get('[/]', function (Request $request, Response $response) {    
+  //   $response->getBody()->write("GET => Bienvenido!!! ,a SlimFramework");
+  //   return $response;
+  // });
   
   $app->group('/Operacion', function () {
  
@@ -52,6 +54,13 @@ $app->group('/Empleado', function () {
    $this->put('/', \EmpleadoService::class . ':ModificarUno');
       
  })->add(\MWparaAutentificar::class . ':VerificarToken');
+
+$app->get('/cocheras/', function (Request $request, Response $response) {
+      $libres = $request->params('libres');
+      $cocheras= Cochera::TraerCocheras($libres); 
+      $newResponse = $response->withJson($cocheras, 200); 
+      return $newResponse;
+  });
 
   //log---------------------------------------------
 
