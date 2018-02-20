@@ -100,7 +100,7 @@ class Empleado
 			
 	}
 
-	public function TraerOperaciones() 
+	public function Operaciones() 
 	{
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 			$consulta = $objetoAccesoDato->RetornarConsulta("select 

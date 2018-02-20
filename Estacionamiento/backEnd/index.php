@@ -9,6 +9,7 @@ require_once './Modelo/Operacion.php';
 require_once './Modelo/Empleado.php';
 require_once './Aplicacion/OperacionService.php';
 require_once './Aplicacion/EmpleadoService.php';
+require_once './Aplicacion/CocheraService.php';
 require_once './AutentificadorJWT.php';
 require_once './MW/MWparaAutentificar.php';
 require_once './Aplicacion/SessionService.php';
@@ -63,6 +64,11 @@ $app->get('/cocheras/', function (Request $request, Response $response) {
       $params = $request->getParams();
       $cocheras= Cochera::TraerCocheras($params['libres']); 
       $newResponse = $response->withJson($cocheras, 200); 
+      return $newResponse;
+  });
+$app->get('/cocherasStatus/', function (Request $request, Response $response) {
+      $status= CocheraService::TraerStatus(); 
+      $newResponse = $response->withJson($status, 200); 
       return $newResponse;
   });
 

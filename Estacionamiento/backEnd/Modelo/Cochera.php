@@ -1,4 +1,15 @@
 <?php
+
+class CocheraDto{
+  public $piso;
+  public $numero;
+  public $numeroDeOpereaciones;
+
+  public function __construct() {
+       
+   }
+
+}
 class Cochera
 {
 	public $id;
@@ -33,7 +44,39 @@ class Cochera
 		
 		return $consulta->execute();
 	  }
+
+	  public static function TraerUsos()
+	 {
+		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+		$consulta =$objetoAccesoDato->RetornarConsulta("
+			select c.piso, c.numero, count(*) as numeroDeOpereaciones		
+			from Cocheras c
+			inner join Operaciones o on c.id = o.cocheraId
+			group by c.id,c.piso,c.numero"); 
+		
+		 $consulta->execute();
+		  // $c = $consulta->fetchObject('CocheraDto');
+		 $c = $consulta->fetchAll(PDO::FETCH_CLASS, "CocheraDto");
+		   // var_dump($c);
+		  return $c;
+	  } 
 	
+	 public static function TraerSinUsos()
+	 {
+		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+		$consulta =$objetoAccesoDato->RetornarConsulta("
+			select c.piso, c.numero, 0 as numeroDeOpereaciones
+			from Cocheras c
+			left join Operaciones o on c.id = o.cocheraId
+			where o.id is null
+			"); 
+		
+		 $consulta->execute();
+		  // $c = $consulta->fetchObject('CocheraDto');
+		 $c = $consulta->fetchAll(PDO::FETCH_CLASS, "CocheraDto");
+		   // var_dump($c);die();
+		  return $c;
+	  } 
 
 
 

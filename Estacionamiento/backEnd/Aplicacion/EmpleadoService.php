@@ -134,7 +134,7 @@ class EmpleadoService extends Empleado //implements IApiUsable
     public function TraerOperaciones($request, $response, $args) {
         $objDelaRespuesta= new stdclass();
          $e = new Empleado();
-         $rtdo = $e->TraerOperaciones();//deberia ser estatico pero no me anda
+         $rtdo = $e->Operaciones();//deberia ser estatico pero no me anda
          $objDelaRespuesta->resultado = $rtdo;
         return $response->withJson($objDelaRespuesta, 200);      
     }

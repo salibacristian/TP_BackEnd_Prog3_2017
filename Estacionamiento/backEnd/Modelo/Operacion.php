@@ -50,13 +50,14 @@ class Operacion
 			fecha_hora_salida = :fecha_hora_salida,
 			tiempo = :tiempo,
 			importe = :importe,
-			cocheraId = null		
+			cocheraId = :cocheraId		
 			WHERE id =:id");
 		$consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
 		$consulta->bindValue(':id_empleado_salida',$this->id_empleado_salida, PDO::PARAM_INT);
 		$consulta->bindValue(':fecha_hora_salida', $this->fecha_hora_salida, PDO::PARAM_STR);
 		$consulta->bindValue(':tiempo', $this->tiempo, PDO::PARAM_STR);
 		$consulta->bindValue(':importe', $this->importe, PDO::PARAM_STR);
+		$consulta->bindValue(':cocheraId', $this->cocheraId, PDO::PARAM_INT);
 		return $consulta->execute();
 	  }
 	
