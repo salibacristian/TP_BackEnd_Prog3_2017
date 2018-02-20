@@ -10,6 +10,14 @@ class EmpleadoService extends Empleado //implements IApiUsable
      	$newResponse = $response->withJson($e, 200);  
     	return $newResponse;
     }
+
+    public function VerificarUsuario($request, $response, $args) {
+        $ArrayDeParametros = $request->getParsedBody();
+        $e=Empleado::VerificarUsuario($ArrayDeParametros['mail'],$ArrayDeParametros['clave']);
+        $newResponse = $response->withJson($e, 200);  
+        return $newResponse;
+    }
+
      public function TraerTodos($request, $response, $args) {
       	$empleados=Empleado::TraerEmpleados();
      	$response = $response->withJson($empleados, 200);  

@@ -1,22 +1,10 @@
 <?php
 
 require_once './AutentificadorJWT.php';
+require_once './Aplication/SessionService.php';
 class MWparaAutentificar
 {
- /**
-   * @api {any} /MWparaAutenticar/  Verificar Usuario
-   * @apiVersion 0.1.0
-   * @apiName VerificarUsuario
-   * @apiGroup MIDDLEWARE
-   * @apiDescription  Por medio de este MiddleWare verifico las credeciales antes de ingresar al correspondiente metodo 
-   *
-   * @apiParam {ServerRequestInterface} request  El objeto REQUEST.
- * @apiParam {ResponseInterface} response El objeto RESPONSE.
- * @apiParam {Callable} next  The next middleware callable.
-   *
-   * @apiExample Como usarlo:
-   *    ->add(\MWparaAutenticar::class . ':VerificarUsuario')
-   */
+ 
 	public static function VerificarUsuario($request, $response, $next) {
          
 
@@ -27,25 +15,38 @@ class MWparaAutentificar
 		  }
 		  else
 		  {
-	  		//aqui buscar en la tabla empleados
+		  		//aqui buscar en la tabla empleados
 		    $response->getBody()->write('<p>verifico credenciales</p>');
-		    $ArrayDeParametros = $request->getParsedBody();
-		    $nombre=$ArrayDeParametros['nombre'];
-		    $tipo=$ArrayDeParametros['tipo'];
-		    if($tipo=="administrador")
-		    {
-		      $response->getBody()->write("<h3>Bienvenido $nombre </h3>");
-		      $response = $next($request, $response);
-		    }
-		    else
-		    {
-		      $response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
-		    }  
+		    $usr = EmpleadoService::VerificarUsuario($request,$response);
+	    	if($usr != null){
+			    $objDelaRespuesta= new stdclass();
+			    $objDelaRespuesta->token=AutentificadorJWT::CrearToken(array('usuario' => $usr->mail,'perfil' => $usr->perfil);
+
+				$data = Session::getInstance();
+				$data->mail = $usr->mail;
+				$data->perfil = $usr->perfil;
+				
+				$aud = AutentificadorJWT::ObtenerPayLoad($objDelaRespuesta->token)->aud;
+		    	$this->RegistrarInicio($data,$aud);
+			  
+			    $response = $response->withJson($objDelaRespuesta, 200);  
+
+	    
+		    	$response->getBody()->write("<h3>Bienvenido</h3>");
+		    	$response = $next($request, $response);
+			}
+		    else $response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
+		      
 		  }
-		  $objRespuesta = new stdClass();
-		  $objRespuesta->datos="algo";
-		  $response->getBody()->write('<p>vuelvo del verificador de credenciales</p>');
 		  return $response;   
+	}
+
+	private function RegistrarInicio($data,$aud){
+		$file = fopen("ingresos.txt", "a");
+		$date = new DateTime(date(DATE_ATOM));
+		fwrite($file, $data->mail . '-' . $date . '-' . $aud . PHP_EOL);
+
+		fclose($file);
 	}
 
 	public static function VerificarToken($request, $response, $next) {

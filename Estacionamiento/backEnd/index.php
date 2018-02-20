@@ -11,6 +11,7 @@ require_once './Aplicacion/OperacionService.php';
 require_once './Aplicacion/EmpleadoService.php';
 require_once './AutentificadorJWT.php';
 require_once './MW/MWparaAutentificar.php';
+require_once './Aplication/SessionService.php';
 
 
 $config['displayErrorDetails'] = true;
@@ -51,16 +52,24 @@ $app->group('/Empleado', function () {
    $this->put('/', \EmpleadoService::class . ':ModificarUno');
       
  })->add(\MWparaAutentificar::class . ':VerificarToken');
- 
- 
+
+  //log---------------------------------------------
+
+   $app->post('/login/', function (Request $request, Response $response) {
+      return $response;
+  })
+   ->add(\MWparaAutentificar::class . ':VerificarUsuario');
+
+$app->get('/logout/', function (Request $request, Response $response) {
+        $data = Session::getInstance();
+        $data->destroy();
+      return $response->getBody()->write('<p>sesion cerrada</p>');
+  });
  //jwt---------------------------------------------
 
   $app->get('/crearToken/', function (Request $request, Response $response) {
-      $datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");
-     //$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'profe', 'alias' => "PinkBoy");
-      
-      $token= AutentificadorJWT::CrearToken($datos); 
-      $newResponse = $response->withJson($token, 200); 
+      $auth= MWparaAutentificar::VerificarUsuario($request, $response); 
+      $newResponse = $response->withJson($auth, 200); 
       return $newResponse;
   });
 

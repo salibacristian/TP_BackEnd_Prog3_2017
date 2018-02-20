@@ -84,6 +84,21 @@ class Empleado
 			
 	}
 
+	
+	public static function VerificarUsuario($mail,$clave) 
+	{
+			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+			$consulta =$objetoAccesoDato->RetornarConsulta("select *
+			from Empleados where mail = :mail AND clave = :clave");
+			$consulta->bindValue(':mail',$this->mail, PDO::PARAM_STR);
+			$consulta->bindValue(':clave',$this->clave, PDO::PARAM_STR);
+			$consulta->execute();
+			$v= $consulta->fetchObject('Empleado');
+			return $v;				
+
+			
+	}
+
 	// public static function TraerUnCdAnio($id,$anio) 
 	// {
 			// $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
