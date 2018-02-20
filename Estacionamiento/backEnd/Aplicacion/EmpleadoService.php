@@ -10,6 +10,13 @@ class EmpleadoService extends Empleado //implements IApiUsable
      	$newResponse = $response->withJson($e, 200);  
     	return $newResponse;
     }
+
+    public static function VerificarUsuario($request, $response) {
+        $ArrayDeParametros = $request->getParsedBody();
+        $e=Empleado::VerificarEmpleado($ArrayDeParametros['mail'],$ArrayDeParametros['clave']);
+        return $e;
+    }
+
      public function TraerTodos($request, $response, $args) {
       	$empleados=Empleado::TraerEmpleados();
      	$response = $response->withJson($empleados, 200);  
@@ -17,7 +24,7 @@ class EmpleadoService extends Empleado //implements IApiUsable
     }
       public function CargarUno($request, $response, $args) {
      	 $ArrayDeParametros = $request->getParsedBody();
-        //var_dump($ArrayDeParametros);
+        var_dump($ArrayDeParametros);die();
 		$nombre= $ArrayDeParametros['nombre'];
         $apellido= $ArrayDeParametros['apellido'];
         $clave= $ArrayDeParametros['clave'];
