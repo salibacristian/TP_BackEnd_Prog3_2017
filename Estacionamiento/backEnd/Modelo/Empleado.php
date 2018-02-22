@@ -76,7 +76,8 @@ class Empleado
 	{
 			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 			$consulta =$objetoAccesoDato->RetornarConsulta("select *
-			from Empleados where id = $id");
+			from Empleados where id = :id");
+			$consulta->bindValue(':id',$id, PDO::PARAM_INT);
 			$consulta->execute();
 			$v= $consulta->fetchObject('Empleado');
 			return $v;				
@@ -99,41 +100,22 @@ class Empleado
 			
 	}
 
-	// public static function TraerUnCdAnio($id,$anio) 
-	// {
-			// $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			// $consulta =$objetoAccesoDato->RetornarConsulta("select  titel as titulo, interpret as cantante,jahr as año from cds  WHERE id=? AND jahr=?");
-			// $consulta->execute(array($id, $anio));
-			// $cdBuscado= $consulta->fetchObject('cd');
-      		// return $cdBuscado;				
+	public function Operaciones() 
+	{
+			$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+			$consulta = $objetoAccesoDato->RetornarConsulta("select 
+				e.mail as user, count(*) as operaciones
+			from Ingresos_empleados i
+			inner join Empleados e on i.id_empleado = e.id
+			group by e.mail");
+			$consulta->execute();
+			$v= $consulta->fetchAll(PDO::FETCH_ASSOC);
+			return $v;				
 
 			
-	// }
+	}
 
-	// public static function TraerUnCdAnioParamNombre($id,$anio) 
-	// {
-			// $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			// $consulta =$objetoAccesoDato->RetornarConsulta("select  titel as titulo, interpret as cantante,jahr as año from cds  WHERE id=:id AND jahr=:anio");
-			// $consulta->bindValue(':id', $id, PDO::PARAM_INT);
-			// $consulta->bindValue(':anio', $anio, PDO::PARAM_STR);
-			// $consulta->execute();
-			// $cdBuscado= $consulta->fetchObject('cd');
-      		// return $cdBuscado;				
-
-			
-	// }
 	
-	// public static function TraerUnCdAnioParamNombreArray($id,$anio) 
-	// {
-			// $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-			// $consulta =$objetoAccesoDato->RetornarConsulta("select  titel as titulo, interpret as cantante,jahr as año from cds  WHERE id=:id AND jahr=:anio");
-			// $consulta->execute(array(':id'=> $id,':anio'=> $anio));
-			// $consulta->execute();
-			// $cdBuscado= $consulta->fetchObject('cd');
-      		// return $cdBuscado;				
-
-			
-	// }
 
 
 }

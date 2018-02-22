@@ -5,8 +5,8 @@ require_once './Interfaces/IApiUsable.php';
 class EmpleadoService extends Empleado //implements IApiUsable
 {
  	public function TraerUno($request, $response, $args) {
-     	$id=$args['id'];
-    	$e=Empleado::TraerEmpleado($id);
+     	$ArrayDeParametros=$request->getParams();
+        $e=Empleado::TraerEmpleado($ArrayDeParametros['id']);
      	$newResponse = $response->withJson($e, 200);  
     	return $newResponse;
     }
@@ -105,6 +105,38 @@ class EmpleadoService extends Empleado //implements IApiUsable
 		//var_dump($resultado);
 		$objDelaRespuesta->resultado=$resultado;
 		return $response->withJson($objDelaRespuesta, 200);		
+    }
+
+     public function TraerIngresos($request, $response, $args) {
+        $ArrayDeParametros=$request->getParams();
+        $objDelaRespuesta= new stdclass();
+        $objDelaRespuesta->resultado = array();
+        $e=Empleado::TraerEmpleado($ArrayDeParametros['id']);
+        if($e != null)
+        {
+            $file = fopen("ingresos.txt", "r");
+            while (!feof($file)) {
+                $linea = fgets($file);
+                $mail =  explode('-', $linea)[0];   
+                if($e->mail == $mail)
+                {
+                    array_push($objDelaRespuesta->resultado, $linea); 
+                }
+            }
+            
+            //var_dump($objDelaRespuesta);die();
+            fclose($file);
+        }
+
+        return $response->withJson($objDelaRespuesta, 200);      
+    }
+
+    public function TraerOperaciones($request, $response, $args) {
+        $objDelaRespuesta= new stdclass();
+         $e = new Empleado();
+         $rtdo = $e->Operaciones();//deberia ser estatico pero no me anda
+         $objDelaRespuesta->resultado = $rtdo;
+        return $response->withJson($objDelaRespuesta, 200);      
     }
 
 

@@ -38,7 +38,7 @@ class MWparaAutentificar
 		    	$response->getBody()->write("<h3>Bienvenido</h3>");
 		    	$response = $next($request, $response);
 			}
-		    else $response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
+		    else $response->getBody()->write('<p>usuario no encontrado</p>');
 		      
 		  }
 		  return $response;   
@@ -67,4 +67,21 @@ class MWparaAutentificar
       }  
       return $response;
 	}
+
+	public static function VerificarPerfil($request, $response, $next) {
+		try 
+		{
+			$ArrayDeParametros = $request->getParsedBody();
+		  // AutentificadorJWT::verificarToken($ArrayDeParametros['token']);
+		  $data = Session::getInstance();
+		  if($data->get('perfil') == 'Administrador')
+			  $response = $next($request, $response);  
+		  else $response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
+		}
+		catch (Exception $e) {      
+		  //guardar en un log
+		  echo $e;
+		}  
+		return $response;
+	  }
 }
