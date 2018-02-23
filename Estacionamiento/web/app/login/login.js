@@ -19,25 +19,27 @@ $(document).ready(function() {
   };
   
   $(document).on("click", ".login__submit", function(e) {
-    if (animating) return;
-    animating = true;
-    var that = this;
-    ripple($(that), e);
-    $(that).addClass("processing");
-    setTimeout(function() {
-      $(that).addClass("success");
-      setTimeout(function() {
-        $app.show();
-        $app.css("top");
-        $app.addClass("active");
-      }, submitPhase2 - 70);
-      setTimeout(function() {
-        $login.hide();
-        $login.addClass("inactive");
-        animating = false;
-        $(that).removeClass("success processing");
-      }, submitPhase2);
-    }, submitPhase1);
+    // if (animating) return;
+    // animating = true;
+    // var that = this;
+    // ripple($(that), e);
+    // $(that).addClass("processing");
+    // setTimeout(function() {
+    //   $(that).addClass("success");
+    //   setTimeout(function() {
+    //     $app.show();
+    //     $app.css("top");
+    //     $app.addClass("active");
+    //   }, submitPhase2 - 70);
+    //   setTimeout(function() {
+    //     $login.hide();
+    //     $login.addClass("inactive");
+    //     animating = false;
+    //     $(that).removeClass("success processing");
+    //   }, submitPhase2);
+    // }, submitPhase1);
+
+    singin();
   });
   
   $(document).on("click", ".app__logout", function(e) {
@@ -63,58 +65,45 @@ $(document).ready(function() {
 
 var servidor="http://bpdda.esy.es/TP_BackEnd_Prog3_2017/Estacionamiento/backEnd/";
 
-function ingresar()
+function singin()
 {
-	
-	console.log("ingresar");
-	var _correo=$("#usuario").val();
-	var _clave=$("#clave").val();
-	console.log(_correo+_clave);
+	var _correo=$("#usr").val();
+	var _clave=$("#pass").val();
 	$.ajax({
 		 type: "post",
-		url: servidor+"ingreso/",
+		url: servidor+"login/",
 		data: {
-	        datosLogin: {
-	        usuario: _correo,
+	        mail: _correo,
 	        clave: _clave 
-    	}
     	}
    		
 	})
-	.then(function(retorno){
-		console.info("bien",retorno);
-		
+	.then(function(retorno){		
 		if (typeof(Storage) !== "undefined") {
-    		// Code for localStorage/sessionStorage.
-    		localStorage.setItem('tokenUTNFRA', retorno.token);
-
-
+    		localStorage.setItem('tokenEstacionamiento', retorno.token);
 		} else {
 		   console.log("Sorry! No Web Storage support..");
-		}
-		
-	
+    }		
+    if(retorno.session == _correo)
+    {
+      location.href = "http://bpdda.esy.es/TP_BackEnd_Prog3_2017/Estacionamiento/web/app/dashboard/dashboard.html";
+    }
+    swal({
+      title: retorno.mensaje,
+      type: "info",
+      showCancelButton: false,
+      confirmButtonClass: "btn-info",
+      confirmButtonText: "cerrar"
+    });
 	},function(error){
-		alert(error.responseText);
-		console.info("error",error);
+		swal({
+      title: "Error",
+      text: "Hubo un error al iniciar sesion",
+      type: "error",
+      showCancelButton: false,
+      cancelButtonClass: "btn-info",
+      cancelButtonText: "cerrar"
+    });
 	});
 	
-	
-}
-function enviarToken()
-{
-	$.ajax({
-		  url: servidor+"tomarToken/",
-		  type: 'GET',
-		 
-		  headers: {"miTokenUTNFRA": localStorage.getItem('tokenUTNFRA')}
-	}).then( function(itemResponse) {
-		
-        console.info("bien -->",itemResponse);
-    }, 
-    function(error) {
-
-    	alert(error.responseText);
-        console.info("error",error);
-    });
 }

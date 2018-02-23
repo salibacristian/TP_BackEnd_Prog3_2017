@@ -10,13 +10,10 @@ class MWparaAutentificar
 
 		  if($request->isGet())
 		  {
-		     $response->getBody()->write('<p>NO necesita credenciales para los get </p>');
 		     $response = $next($request, $response);
 		  }
 		  else
 		  {
-		  		//aqui buscar en la tabla empleados
-		    $response->getBody()->write('<p>verifico credenciales</p>');
 		    $usr = EmpleadoService::VerificarUsuario($request,$response);
 	    	if($usr != null){
 			    $objDelaRespuesta= new stdclass();
@@ -34,12 +31,13 @@ class MWparaAutentificar
 			  
 			    $response = $response->withJson($objDelaRespuesta, 200);  
 
-	    
-		    	$response->getBody()->write("<h3>Bienvenido</h3>");
 		    	$response = $next($request, $response);
 			}
-		    else $response->getBody()->write('<p>usuario no encontrado</p>');
-		      
+		    else {
+					$objDeLaRespuesta = new stdClass();
+					$objDeLaRespuesta->mensaje="Usuario o contraseña incorrecta";
+					$response = $response->withJson($objDeLaRespuesta, 200); 
+				}
 		  }
 		  return $response;   
 	}
