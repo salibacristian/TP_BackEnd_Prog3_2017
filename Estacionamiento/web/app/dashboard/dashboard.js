@@ -1,7 +1,10 @@
 var servidor="http://bpdda.esy.es/TP_BackEnd_Prog3_2017/Estacionamiento/backEnd/";
 
 $(document).ready(function() {
-    $("#usr").html(localStorage.getItem('usrEstacionamiento'));
+    let user = JSON.parse(localStorage.getItem('usrEstacionamiento'));
+    let folderEmployeeImgaes = "../../../backEnd/fotosEmpleados/";
+     let img = user.foto != null? "<img class='porfileImg' src='" + folderEmployeeImgaes + user.foto + "'></img>" : "<span class='glyphicon glyphicon-user'></span>";
+    $("#usr").html(img + ' ' + user.mail);
 
     $(document).on("click", "#app__logout", function(e) {
         $.ajax({

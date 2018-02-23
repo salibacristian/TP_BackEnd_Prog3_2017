@@ -81,7 +81,7 @@ function singin()
 	.then(function(retorno){		
 		if (typeof(Storage) !== "undefined") {
     		localStorage.setItem('tokenEstacionamiento', retorno.token);
-    		localStorage.setItem('usrEstacionamiento', retorno.session);
+    		localStorage.setItem('usrEstacionamiento', JSON.stringify(retorno.user));
 		} else {
 		   console.log("Sorry! No Web Storage support..");
     }		
