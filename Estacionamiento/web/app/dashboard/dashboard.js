@@ -16,7 +16,69 @@ function dibujarTabla(lista){
 
 }
 
+function strToDate(dateString){
+    let date = dateString.split(' ')[0];
+    let hourAndMin = dateString.split(' ')[1];
+    let day = date.split('/')[0];
+    let month = date.split('/')[1];
+    let year = date.split('/')[2];
+    let hour = hourAndMin.split(':')[0];
+    let min = hourAndMin.split(':')[1];
+
+    return new Date(year,(month-1),day,hour,min);
+}
+
+function diff_hours(dt2, dt1) 
+{
+
+ var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+ diff /= (60 * 60);
+ return Math.abs(Math.round(diff));
+ 
+}
+
+function traerOperacion(dominio){
+    $.ajax({
+        type: "get",
+       url: servidor+"Operacion/operacion",
+       data: {
+           dominio: dominio
+       }
+          
+   })
+   .then(function(retorno){	
+       if(retorno.dominio == dominio){
+       let info = retorno.dominio + ' ' + retorno.marca + ' ' + retorno.color;
+       let imgUrl = "../../../backEnd/fotosVehiculos/" + retorno.foto;
+    $(".operacionInfo").html(info); 
+    $(".vehiculoImg").html("<img alt='Sin foto' src=" + imgUrl + "></img>"); 
+
+    let date = strToDate(retorno.fecha_hora_ingreso);
+    $(".operacionIngreso").html(retorno.fecha_hora_ingreso); 
+    var hours = diff_hours(new Date(),date);
+    $(".tiempoAcum").html(hours + " horas");     
+    
+       }
+   $("#spinnerGif").hide();
+   $("#cocheraModalBody").show();
+   
+   },function(error){
+    $("#spinnerGif").hide();
+    $("#cocheraModalBody").show();
+       swal({
+        title: "Error",
+        text: "Hubo un error al cargar la operacion",
+        type: "error",
+        showCancelButton: false,
+        cancelButtonClass: "btn-info",
+        cancelButtonText: "cerrar"
+    });
+   });
+}
+
 function cargarCocheraModal(cocheraId){
+ $("#spinnerGif").show();
+ $("#cocheraModalBody").hide();
 var cocheras = JSON.parse(localStorage.getItem('cocheras'));
 var cochera = cocheras.filter(function(c){
     return c.id == cocheraId;
@@ -25,6 +87,9 @@ let icon = cochera.esParaDiscapacitados == 1? " <i class='fa fa-wheelchair' id='
 $(".numeroCochera").html(cochera.numero + " Piso " + cochera.piso + icon);
 
 $("#popUpCochera").modal();
+
+traerOperacion(cochera.dominio);
+
 }
 
 

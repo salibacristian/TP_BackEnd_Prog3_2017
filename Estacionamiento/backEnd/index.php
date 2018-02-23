@@ -32,7 +32,7 @@ $app = new \Slim\App(["settings" => $config]);
  
   $this->get('/', \OperacionService::class . ':traerTodos');
  
-  $this->get('/{id}', \OperacionService::class . ':traerUno');
+  $this->get('/operacion', \OperacionService::class . ':traerUno');
 
   $this->post('/', \OperacionService::class . ':CargarUno');
 

@@ -8,8 +8,9 @@ require_once './Aplicacion/SessionService.php';
 class OperacionService extends Operacion //implements IApiUsable
 {
  	public function TraerUno($request, $response, $args) {
-     	$id=$args['id'];
-    	$o=Operacion::TraerOperacion($id);
+      $params = $request->getParams();   
+      $dom=$params['dominio'];
+    	$o=Operacion::TraerOperacionPorDominio($dom);
      	$newResponse = $response->withJson($o, 200);  
     	return $newResponse;
     }
