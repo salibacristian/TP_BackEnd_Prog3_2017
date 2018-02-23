@@ -2,9 +2,19 @@ body{
     background-color: #8a8aee;
 }
 
+.tableCochera {
+    width: 30%;
+}
+
 .porfileImg{
     height:40px;
     width:40px;
     margin-top: -5%;
     margin-bottom:-5%;
+}
+
+#wheelchairIcon{
+    font-size:20px;
+    color: rgb(165, 190, 194);
+    /* background-color: white; */
 }

@@ -14,9 +14,10 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">  
   <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans'>
-  <link rel="stylesheet" href="dashboard.css">  
+  <link rel="stylesheet" href="dashboard.css"> 
+  <script src='../../bower_components/jquery/dist/jquery.min.js'></script> 
   <script src="../../assets/bower_components/bootstrap-sweetalert/dist/sweetalert.min.js"></script>
-  <script src='../../bower_components/jquery/dist/jquery.min.js'></script>
+  <script src="../../assets/bootstrap/js/bootstrap.min.js"></script>
   <script src="dashboard.js"></script>
 </head>
 <body>
@@ -43,10 +44,41 @@
   </div>
 </nav>
 <div class="container">
-   <h1>My First Bootstrap Page</h1>
-  <p>This is some text.</p> 
+    <div class="table-responsive">          
+        <table class="table table-hover tableCochera">
+          <thead>
+            <tr>
+              <th>PISO</th>
+              <th>PUESTO</th>
+            </tr>
+          </thead>
+          <tbody id="cocherasEnUso">
+            <!-- <tr>
+               <td></td> 
+            </tr> -->
+          </tbody>
+        </table>
+        </div>
+      </div>
 
 </div>
+<!-- popup cochera -->
+<div class="modal fade" id="popUpCochera" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Cochera <span class="numeroCochera"></span></h4>
+        </div>
+        <div class="modal-body">
+          <p>This is a large modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
