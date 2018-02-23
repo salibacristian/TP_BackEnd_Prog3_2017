@@ -60,14 +60,15 @@ class OperacionService extends Operacion //implements IApiUsable
       $o->foto=$dominio.".".$extension[0];
       $o->IngresarOperacion();
       $archivos['foto']->moveTo($destino.$dominio.".".$extension[0]);
-      $response->getBody()->write("se guardo la operacion");
+      $objDelaRespuesta= new stdclass();
+      $objDelaRespuesta->mensaje = "Exito";  
 
       $i = new Ingreso_empleado();
       $i->fecha_hora_ingreso = $fecha_hora_ingreso;
       $i->id_empleado = $id_empleado_ingreso;
       $i->Ingresar();
 
-      return $response;
+      return $response->withJson($objDelaRespuesta, 200);;
 	}
 	
     //   public function BorrarUno($request, $response, $args) {

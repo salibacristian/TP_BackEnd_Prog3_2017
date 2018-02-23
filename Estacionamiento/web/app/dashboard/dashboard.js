@@ -16,6 +16,74 @@ function dibujarTabla(lista){
 
 }
 
+function ingresar(){
+
+    let dominio = $("#dominio").val();
+    let marca =$("#marca").val();
+    let color = $("#color").val();
+    let foto = $("#fotoCargada").val();
+    let cocheraId = $("#selectCochera").val();
+    $.ajax({
+        type: "post",
+       url: servidor+"Operacion/",
+       data: {
+           dominio: dominio,
+           marca: marca, 
+           color: color ,
+           foto: foto,
+           cocheraId: cocheraId 
+       }
+          
+   })
+   .then(function(retorno){		
+       if(retorno.mensaje == 'Exito')
+            swal(retorno.mensaje,'','success');
+       else swal(retorno.mensaje,'','error');
+   
+   },function(error){
+       swal({
+     title: "Error",
+     text: "Hubo un error al ingresar el vehiculo",
+     type: "error",
+     showCancelButton: false,
+     cancelButtonClass: "btn-info",
+     cancelButtonText: "cerrar"
+   });
+   });
+}
+
+function ingreso(){
+    //buscar cocheras libres
+    $.ajax({
+        type: "get",
+       url: servidor+"cocheras/",
+       data: {
+           libres: 1
+       }
+          
+   })
+   .then(function(retorno){		
+    console.log(retorno);
+
+    retorno.forEach(c => {
+        $("#selectCocheras").append("<option value='"+ c.id +"'>"+c.numero+" piso "+c.piso+"</option>");
+    });
+        
+        $("#popUpIngreso").modal();
+   },function(error){
+       swal({
+        title: "Error",
+        text: "Hubo un error al obtener las cocheras",
+        type: "error",
+        showCancelButton: false,
+        cancelButtonClass: "btn-info",
+        cancelButtonText: "cerrar"
+    });
+   });
+   
+    
+}
+
 function strToDate(dateString){
     let date = dateString.split(' ')[0];
     let hourAndMin = dateString.split(' ')[1];
