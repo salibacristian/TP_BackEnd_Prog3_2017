@@ -17,6 +17,7 @@ class Cochera
 	public $enUso;
 	public $piso;
 	public $numero;
+	public $dominio;
 
 	public static function TraerCocheras($libres) 
 	{
@@ -31,16 +32,18 @@ class Cochera
 	}
   	
 	//llamado al ingresar/sacar vehiculo
-	public static function Modificar($id,$enUso)
+	public static function Modificar($id,$enUso,$dom)
 	 {
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 		$consulta =$objetoAccesoDato->RetornarConsulta("
 			update Cocheras 
 			set 
-			enUso = :enUso
+			enUso = :enUso,
+			dominio = :dom
 			WHERE id =:id");
 		$consulta->bindValue(':id',$id, PDO::PARAM_INT); 
 		$consulta->bindValue(':enUso',$enUso, PDO::PARAM_INT); 
+		$consulta->bindValue(':dom',$dom, PDO::PARAM_STR); 
 		
 		return $consulta->execute();
 	  }

@@ -45,7 +45,7 @@ class OperacionService extends Operacion //implements IApiUsable
       $o->color=$color;
 
       //ocupo cochera
-      Cochera::Modificar($o->cocheraId,1);
+      Cochera::Modificar($o->cocheraId,1,$dominio);
 
       $archivos = $request->getUploadedFiles();
       $destino="./fotosVehiculos/";
@@ -135,7 +135,7 @@ class OperacionService extends Operacion //implements IApiUsable
           // var_dump($o->importe); die();
 
           //libero cochera
-          Cochera::Modificar($o->cocheraId,0);
+          Cochera::Modificar($o->cocheraId,0,null);
 
           $resultado =$o->Modificar();    
           $objDelaRespuesta= new stdclass();
