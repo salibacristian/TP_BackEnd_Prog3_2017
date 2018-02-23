@@ -1,5 +1,5 @@
 var servidor="http://bpdda.esy.es/TP_BackEnd_Prog3_2017/Estacionamiento/backEnd/";
-
+var dominioActual ='';
 function dibujarTabla(lista){
     var rows = '';
     lista.forEach(c => {
@@ -48,6 +48,7 @@ function traerOperacion(dominio){
    })
    .then(function(retorno){	
        if(retorno.dominio == dominio){
+           dominioActual = dominio;
        let info = retorno.dominio + ' ' + retorno.marca + ' ' + retorno.color;
        let imgUrl = "../../../backEnd/fotosVehiculos/" + retorno.foto;
     $(".operacionInfo").html(info); 
@@ -57,7 +58,7 @@ function traerOperacion(dominio){
     $(".operacionIngreso").html(retorno.fecha_hora_ingreso); 
     var hours = diff_hours(new Date(),date);
     $(".tiempoAcum").html(hours + " horas");     
-    
+         
        }
    $("#spinnerGif").hide();
    $("#cocheraModalBody").show();
@@ -138,6 +139,35 @@ function buscarPorDominio(){
         }       
     }
 
+}
+
+function retirar(){
+    // localStorage.getItem('dominio');
+    $.ajax({
+        type: "put",
+       url: servidor+"Operacion/",
+       data: {
+           dominio: dominioActual
+       }
+          
+   })
+   .then(function(retorno){		
+     console.log(retorno);
+     if(retorno.mensaje == 'Exito'){
+        swal(retorno.mensaje,'El importe es $'+retorno.importe,'success');
+     }
+     else swal(retorno.mensaje,'','error');
+    
+   },function(error){
+       swal({
+        title: "Error",
+        text: "Hubo un error al retirar el vehiculo",
+        type: "error",
+        showCancelButton: false,
+        cancelButtonClass: "btn-info",
+        cancelButtonText: "cerrar"
+    });
+   });
 }
 
 $(document).ready(function() {

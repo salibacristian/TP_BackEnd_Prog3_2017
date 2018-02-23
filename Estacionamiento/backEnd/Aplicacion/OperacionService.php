@@ -141,11 +141,14 @@ class OperacionService extends Operacion //implements IApiUsable
           $resultado =$o->Modificar();    
           $objDelaRespuesta= new stdclass();
           //var_dump($resultado);
-          $objDelaRespuesta->resultado=$resultado;
+          $objDelaRespuesta->mensaje=$resultado? 'Exito':'Error';
+          $objDelaRespuesta->importe=$o->importe;
 
           return $response->withJson($objDelaRespuesta, 200); 
         }	
-       return $response->getBody()->write("El auto no está"); 
+        $objDelaRespuesta= new stdclass();
+        $objDelaRespuesta->mensaje = "El auto no esta";
+       return $response->withJson($objDelaRespuesta, 200);
     }
 
      function CalculateImport($hours){
