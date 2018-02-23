@@ -44,12 +44,15 @@
   </div>
 </nav>
 <div class="container">
+    <input type="text" id="lookup" name="search" placeholder="buscar dominio" onkeyup="buscarPorDominio()" >
     <div class="table-responsive">          
         <table class="table table-hover tableCochera">
           <thead>
             <tr>
               <th>PISO</th>
               <th>PUESTO</th>
+              <th>DOMINIO</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="cocherasEnUso">

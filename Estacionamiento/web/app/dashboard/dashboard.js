@@ -1,5 +1,21 @@
 var servidor="http://bpdda.esy.es/TP_BackEnd_Prog3_2017/Estacionamiento/backEnd/";
 
+function dibujarTabla(lista){
+    var rows = '';
+    lista.forEach(c => {
+        let icon = c.esParaDiscapacitados == 1? "<i class='fa fa-wheelchair' id='wheelchairIcon'></i>" : '';
+        rows += "<tr onclick='cargarCocheraModal(" + c.id + ")'>" +
+        "<td>" + c.piso + "</td>" +
+        "<td>" + c.numero + "</td>" +
+        "<td>" + c.dominio + "</td>" +        
+        "<td>" + icon + "</td>" +
+       " </tr>";
+    });
+    
+        $("#cocherasEnUso").html(rows);
+
+}
+
 function cargarCocheraModal(cocheraId){
 var cocheras = JSON.parse(localStorage.getItem('cocheras'));
 var cochera = cocheras.filter(function(c){
@@ -25,19 +41,7 @@ function cargarCocheras(param){
     console.log(retorno);
     localStorage.setItem("cocheras",JSON.stringify(retorno));
     if(retorno.length > 0){
-        //imprimir tabla [{id: "1", esParaDiscapacitados: "0", enUso: "1", piso: "1", numero: "1"}]
-    var rows = '';
-    retorno.forEach(c => {
-        let icon = c.esParaDiscapacitados == 1? "<i class='fa fa-wheelchair' id='wheelchairIcon'></i>" : '';
-        rows += "<tr onclick='cargarCocheraModal(" + c.id + ")'>" +
-        "<td>" + c.piso + "</td>" +
-        "<td>" + c.numero + "</td>" +
-        "<td>" + icon + "</td>" +
-       " </tr>";
-    });
-    
-        $("#cocherasEnUso").html(rows);
-
+        dibujarTabla(retorno);
     }
     else{
         swal('Ninguna cochera está en uso','','info');
@@ -52,6 +56,23 @@ function cargarCocheras(param){
         cancelButtonText: "cerrar"
     });
    });
+}
+
+function buscarPorDominio(){
+    let dominio = $('#lookup').val().toUpperCase();
+    let tabla = $('.tableCochera').get( 0 );
+    tr = tabla.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(dominio) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }       
+    }
+
 }
 
 $(document).ready(function() {
